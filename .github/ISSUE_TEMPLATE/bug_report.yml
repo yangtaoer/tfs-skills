@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a problem with a TFS skill, script, or workflow.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not paste PATs, passwords, internal tokens, or private response logs.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Affected skill
+      options:
+        - tfs-rest-api
+        - tfs-daily-task
+        - tfs-project-catalog
+        - tfs-story-intake
+        - tfs-requirement-workspace
+        - tfs-git-pr
+        - tfs-dev-workflow
+        - Unsure / multiple
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the failure and what you expected instead.
+      placeholder: "Example: tfs-requirement-workspace matched the right project but dropped a repo that uses another target branch."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Include the user prompt, command, or workflow steps. Redact secrets.
+      placeholder: |
+        1. Use $tfs-project-catalog with ...
+        2. Run ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, shell, Codex surface, Python/PowerShell version if relevant.
+      placeholder: "Windows 11, PowerShell, Codex desktop, Python 3.x"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or output
+      description: Paste only redacted output. Remove PATs, cookies, URLs with credentials, and private data.
+      render: text

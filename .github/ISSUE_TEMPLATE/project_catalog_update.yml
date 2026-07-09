@@ -1,0 +1,60 @@
+name: Project catalog update
+description: Add or update standard project names, aliases, repositories, and base branches.
+title: "[Catalog]: "
+labels: ["catalog", "data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this to update the project catalog used by `tfs-project-catalog` and `tfs-requirement-workspace`.
+        Do not include PATs, passwords, or private local paths unless they are intentionally safe to publish.
+  - type: input
+    id: standard_name
+    attributes:
+      label: 标准项目名
+      description: The exact name that should be written inside `【】`.
+      placeholder: "四川省调网络发令"
+    validations:
+      required: true
+  - type: textarea
+    id: aliases
+    attributes:
+      label: 项目别名
+      description: Other names users may type. One per line is preferred.
+      placeholder: |
+        四川省调
+        省调网络发令
+  - type: input
+    id: product_name
+    attributes:
+      label: 产品名称
+      description: If uncertain, write `临时项目交付`.
+      placeholder: "网络发令"
+  - type: textarea
+    id: repositories
+    attributes:
+      label: 代码仓库和基础分支
+      description: List each repo with remote URL or repo name, base branch, role, and module.
+      placeholder: |
+        仓库名: dcsd-notice-srv-sichuan
+        远程地址: http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuan
+        基础分支: dev
+        仓库角色: backend
+        涉及功能模块: 主程序
+        仓库功能描述: 主程序所在仓库
+    validations:
+      required: true
+  - type: textarea
+    id: defaults
+    attributes:
+      label: TFS 字段默认值
+      description: AreaPath, product line, province, delivery owner, or other defaults if they differ from repository defaults.
+      placeholder: |
+        区域: XiNanArea-New\四川省区团队
+        所属产品线: 调度产品线
+        需求交付负责人: 杨涛(四川)
+  - type: textarea
+    id: notes
+    attributes:
+      label: 备注
+      description: Anything reviewers should know, such as shared repos or repo-specific branch exceptions.

@@ -1,0 +1,45 @@
+name: Skill request
+description: Request a new skill or an improvement to an existing TFS skill.
+title: "[Skill]: "
+labels: ["enhancement", "skill"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for skill behavior requests. For project/repo catalog updates, choose "Project catalog update" instead.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill name
+      description: Existing skill name, or a proposed new skill name.
+      placeholder: "tfs-story-intake"
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What should Codex be able to do after this change?
+      placeholder: "When I say ..., Codex should ..."
+    validations:
+      required: true
+  - type: textarea
+    id: current_gap
+    attributes:
+      label: Current gap
+      description: What happens today, or what manual work is still required?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_behavior
+    attributes:
+      label: Proposed behavior
+      description: Include trigger phrases, required fields, defaults, or safety rules.
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example prompts
+      description: Add realistic prompts users would type.
+      placeholder: |
+        帮我录一个 TFS 用户情景：...
+        开始 1551572 这个需求：...
