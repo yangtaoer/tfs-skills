@@ -1,0 +1,4 @@
+interface:
+  display_name: "TFS Git PR"
+  short_description: "Commit TFS code and create dev PRs"
+  default_prompt: "Use $tfs-git-pr to commit my finished changes to TFS Git and create a pull request into dev."

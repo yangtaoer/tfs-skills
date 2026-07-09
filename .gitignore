@@ -1,0 +1,22 @@
+# Local secrets and temporary request bodies
+.env
+*.local.json
+tfs_create.json
+tfs_close.json
+tfs_update.json
+*_pat.txt
+
+# Logs and generated artifacts
+*.log
+*.jsonl
+*.archive
+
+# Python / PowerShell caches
+__pycache__/
+*.pyc
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
