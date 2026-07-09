@@ -34,8 +34,8 @@ Body:
 
 ```json
 {
-  "sourceRefName": "refs/heads/feature/1551572-yangtao",
-  "targetRefName": "refs/heads/dev",
+  "sourceRefName": "refs/heads/feature/<workItemId>-<tfsAlias>",
+  "targetRefName": "refs/heads/<targetBranch>",
   "title": "feat(#1551572):...",
   "description": "..."
 }

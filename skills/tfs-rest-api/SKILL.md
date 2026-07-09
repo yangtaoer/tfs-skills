@@ -151,7 +151,7 @@ GET /_apis/wit/workitems?ids=1,2,...,200&fields=System.Id,System.Title,System.St
 ### 11. WIQL @Me vs Explicit AssignedTo
 Both `@Me` and explicit `AssignedTo` should be tried as fallbacks:
 - `@Me`: Worked reliably in 2026-06 testing (returned 458 tasks)
-- `AssignedTo = 'TELLHOW\\yangtao'`: Returned 0 results (possible escaping issue)
+- `AssignedTo = '<DOMAIN\\alias>'`: May return 0 results depending on TFS identity formatting; prefer `@Me` when querying the current user.
 - Try `@Me` first; if it fails, fall back to explicit assignment or known-ID queries
 
 ### 12. WIQL Response JSON Control Characters
@@ -218,7 +218,7 @@ import json
 date = '2026-05-09'  # from step 1
 patch_data = [
     {'op': 'add', 'path': '/fields/System.Title', 'value': '任务标题'},
-    {'op': 'add', 'path': '/fields/System.AssignedTo', 'value': 'TELLHOW\\yangtao'},
+    {'op': 'add', 'path': '/fields/System.AssignedTo', 'value': '<DOMAIN\\alias>'},
     {'op': 'add', 'path': '/fields/System.AreaPath', 'value': 'XiNanArea-New\\四川省区团队'},
     {'op': 'add', 'path': '/fields/System.IterationPath', 'value': 'XiNanArea-New\\迭代2026-5-1'},
     {'op': 'add', 'path': '/fields/Microsoft.VSTS.Scheduling.OriginalEstimate', 'value': 8},

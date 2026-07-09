@@ -5,7 +5,7 @@ param(
 
     [string]$State = "已解决",
 
-    [string]$TfsBaseUrl = "http://dev.tellhowsoft.com/DefaultCollection"
+    [string]$TfsBaseUrl = $env:TFS_BASE_URL
 )
 
 Set-StrictMode -Version Latest
@@ -21,6 +21,10 @@ function New-TfsHeaders {
 }
 
 $headers = New-TfsHeaders
+if ([string]::IsNullOrWhiteSpace($TfsBaseUrl)) {
+    $TfsBaseUrl = "http://dev.tellhowsoft.com/DefaultCollection"
+}
+
 $patchObject = @{
     op    = "replace"
     path  = "/fields/System.State"

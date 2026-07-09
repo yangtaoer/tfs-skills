@@ -9,10 +9,10 @@
 
 ## Branching
 
-- Before any requirement code exploration or edits, update each involved repository from the latest `origin/dev`.
-- Use `dev` as the default base branch unless the user explicitly names another target.
-- Always fetch `origin/dev`.
-- Create temporary branches from `origin/dev`.
+- Before any requirement code exploration or edits, confirm the target/base branch for each involved repository.
+- Use `TFS_TARGET_BRANCH` if set; otherwise default to `dev` only after confirming the repo does not use another base branch.
+- Always fetch `origin/<targetBranch>`.
+- Create temporary branches from `origin/<targetBranch>`.
 - Branch format:
 
 ```text
@@ -25,13 +25,13 @@ Example:
 feature/1551572-yangtao
 ```
 
-- Do not commit on `dev`.
+- Do not commit on the target/base branch.
 - Do not overwrite existing local changes.
 
 ## PR and Completion
 
 - Use `tfs-git-pr` for commit and PR creation.
-- PR target is `dev`.
+- PR target is the confirmed target branch.
 - PR title equals commit subject.
 - Enable auto-complete.
 - Configure source branch deletion through PR completion options.

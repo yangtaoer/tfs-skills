@@ -6,10 +6,13 @@ description: TFS每日任务管理 - 创建子任务、关闭用户情景等操�
 # TFS 每日任务管理
 
 ## 用户信息
-- **用户**: 杨涛(四川) `TELLHOW\yangtao`
-- **项目**: XiNanArea-New
-- **区域**: XiNanArea-New\四川省区团队
-- **角色**: 需求交付负责人
+首次使用或切换使用者时，先确认以下信息。不要假设固定用户、区域或团队。
+
+- **TFS 登录/分支别名**: 例如 `yangtao`，可来自 `TFS_USER_ALIAS`
+- **任务负责人**: 例如 `TELLHOW\your-alias`，可来自 `TFS_ASSIGNED_TO`
+- **项目**: 例如 `XiNanArea-New`，可来自 `TFS_PROJECT`
+- **区域路径**: 例如 `XiNanArea-New\四川省区团队`，可来自 `TFS_AREA_PATH`
+- **角色/交付负责人字段值**: 如果需要改用户情景负责人，先向用户确认显示名和账号
 
 ## PAT Token
 - 优先从环境变量 `TFS_PAT` 读取。
@@ -53,14 +56,14 @@ description: TFS每日任务管理 - 创建子任务、关闭用户情景等操�
 
 ### 1. 接需求（一次性）
 用户情景由需求提出人（如孙杰）创建，指派给自己。需要：
-- 把 **需求交付负责人** 改为 `杨涛(四川) <TELLHOW\yangtao>`
+- 如用户明确要求，按用户提供的显示名和账号修改 **需求交付负责人**
 - 把用户情景状态从 **新建** 改为 **已评审**
 
 API:
 ```
 PATCH /DefaultCollection/_apis/wit/workitems/{id}?api-version=2.0
 [
-  {"op": "replace", "path": "/fields/Custom.3d3cdcf5-de35-4448-afbb-bdfd963d2564", "value": "杨涛(四川) <TELLHOW\\yangtao>"},
+  {"op": "replace", "path": "/fields/Custom.3d3cdcf5-de35-4448-afbb-bdfd963d2564", "value": "<显示名> <DOMAIN\\alias>"},
   {"op": "replace", "path": "/fields/System.State", "value": "已评审"}
 ]
 ```
@@ -96,8 +99,8 @@ py -3 -c "
 import json
 patch_data = [
     {'op': 'add', 'path': '/fields/System.Title', 'value': '任务标题'},
-    {'op': 'add', 'path': '/fields/System.AssignedTo', 'value': 'TELLHOW\x5cyangtao'},
-    {'op': 'add', 'path': '/fields/System.AreaPath', 'value': 'XiNanArea-New\x5c四川省区团队'},
+    {'op': 'add', 'path': '/fields/System.AssignedTo', 'value': '<DOMAIN\\alias>'},
+    {'op': 'add', 'path': '/fields/System.AreaPath', 'value': '<项目\\团队区域>'},
     {'op': 'add', 'path': '/fields/System.IterationPath', 'value': 'XiNanArea-New\x5c迭代2026-5-1'},
     {'op': 'add', 'path': '/fields/Microsoft.VSTS.Scheduling.OriginalEstimate', 'value': 8},
     {'op': 'add', 'path': '/fields/Microsoft.VSTS.Scheduling.RemainingWork', 'value': 8},
@@ -325,7 +328,7 @@ ORDER BY [System.Id] DESC
 SELECT [System.Id], [System.Title], [System.State]
 FROM WorkItems
 WHERE [System.TeamProject] = @Project
-  AND [System.AssignedTo] = 'TELLHOW\\yangtao'
+  AND [System.AssignedTo] = '<DOMAIN\\alias>'
   AND [System.WorkItemType] = '任务'
 ORDER BY [System.Id] DESC
 ```
@@ -360,8 +363,9 @@ ORDER BY [System.Id] DESC
 9. **TargetDate格式**: 需要带时间部分和UTC时区后缀，如 `{日期}T09:30:00Z`，不能只传日期。用户时区UTC+8，所以 08:30本地=00:30UTC，17:30本地=09:30UTC。
 10. **创建任务不能一步设为已关闭**: POST创建时不能在body里设State=已关闭，TFS会拒绝。必须先创建（State默认为新建），再单独PATCH关闭。
 11. **每次必须动态获取日期**: 先查UTC时间+8小时算出用户本地日期，不要硬编码。
-12. **WIQL `@Me` 宏**: 2026-06实测 `@Me` 查询**可靠**（返回458条任务），反而显式 `AssignedTo = 'TELLHOW\\yangtao'` 返回0条。两种方式都应准备好，互为备选。WIQL返回的JSON可能含控制字符，必须用 `json.loads(text, strict=False)` 或先curl写文件再读。
+12. **WIQL `@Me` 宏**: 实测 `@Me` 查询当前用户通常比显式 `AssignedTo = '<DOMAIN\\alias>'` 更可靠。两种方式都应准备好，互为备选。WIQL返回的JSON可能含控制字符，必须用 `json.loads(text, strict=False)` 或先curl写文件再读。
 13. **WIQL JSON 控制字符**: API返回的JSON中可能包含控制字符（如tab、换行等），`json.loads()` 默认 strict=True 会报错 `Invalid control character`。解决方法：`json.loads(text, strict=False)` 或 `curl -o file.json` 后再读文件。
 14. **无父级用户情景**: 部分任务可能没有关联父级用户情景（relations为空）。补缺任务时如果找不到父级，可以不关联父级直接创建独立任务。
 15. **补缺任务参考内容**: 补缺时参考前一天的标题和描述来延续工作内容，保持工作线的自然连贯性。标题应体现工作的递进关系（如"搭建环境"→"功能验证"→"接口联调"）。
 16. **分类API路径 ≠ IterationPath字段**: 分类API返回的path（如 `\XiNanArea-New\迭代\迭代2026-6-3`）与 IterationPath 字段值（如 `XiNanArea-New\迭代2026-6-3`）格式不同：API path有前导`\`和中间`迭代`层级，IterationPath没有。**不要直接用API path作为IterationPath**。必须先按任务 StartDate 匹配节点，再转换为字段值。
+17. **跨平台执行**: `scripts/batch_create_tasks.py` 可在 Windows/macOS/Linux 的 Python 3 下执行；PowerShell 不是必需条件。

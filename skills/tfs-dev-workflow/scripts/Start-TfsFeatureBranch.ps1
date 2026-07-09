@@ -8,7 +8,9 @@ param(
 
     [string]$TfsAlias = $env:TFS_USER_ALIAS,
 
-    [string]$TargetBranch = "dev"
+    [string]$TargetBranch = $env:TFS_TARGET_BRANCH,
+
+    [string]$RemoteHost = $env:TFS_REPO_HOST
 )
 
 Set-StrictMode -Version Latest
@@ -32,14 +34,22 @@ if ([string]::IsNullOrWhiteSpace($TfsAlias)) {
     throw "TfsAlias is required. Provide -TfsAlias or set TFS_USER_ALIAS."
 }
 
+if ([string]::IsNullOrWhiteSpace($TargetBranch)) {
+    $TargetBranch = "dev"
+}
+
+if ([string]::IsNullOrWhiteSpace($RemoteHost)) {
+    $RemoteHost = "dev.tellhowsoft.com"
+}
+
 $inside = Invoke-Git -Arguments @("rev-parse", "--is-inside-work-tree")
 if ($inside -ne "true") {
     throw "RepoPath is not a git work tree: $RepoPath"
 }
 
 $origin = Invoke-Git -Arguments @("remote", "get-url", "origin")
-if ($origin -notmatch "dev\.tellhowsoft\.com") {
-    throw "origin remote is not a dev.tellhowsoft.com repository: $origin"
+if ($origin -notmatch [regex]::Escape($RemoteHost)) {
+    throw "origin remote is not a $RemoteHost repository: $origin"
 }
 
 $status = Invoke-Git -Arguments @("status", "--short")

@@ -6,7 +6,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$SourceBranch,
 
-    [string]$TargetBranch = "dev",
+    [string]$TargetBranch = $env:TFS_TARGET_BRANCH,
 
     [Parameter(Mandatory = $true)]
     [string]$Title,
@@ -19,7 +19,9 @@ param(
 
     [bool]$DeleteSourceBranch = $true,
 
-    [string]$TfsBaseUrl = "http://dev.tellhowsoft.com/DefaultCollection"
+    [string]$TfsBaseUrl = $env:TFS_BASE_URL,
+
+    [string]$RemoteHost = $env:TFS_REPO_HOST
 )
 
 Set-StrictMode -Version Latest
@@ -68,8 +70,8 @@ function Invoke-TfsRest {
 
 function Get-OriginInfo {
     $origin = Invoke-Git -Arguments @("remote", "get-url", "origin")
-    if ($origin -notmatch "dev\.tellhowsoft\.com") {
-        throw "origin remote is not a dev.tellhowsoft.com TFS repository: $origin"
+    if ($origin -notmatch [regex]::Escape($RemoteHost)) {
+        throw "origin remote is not a $RemoteHost TFS repository: $origin"
     }
 
     $normalized = $origin.Trim()
@@ -225,6 +227,18 @@ function Enable-PullRequestAutoComplete {
 
 if (-not (Test-Path -LiteralPath $RepoPath)) {
     throw "RepoPath does not exist: $RepoPath"
+}
+
+if ([string]::IsNullOrWhiteSpace($TargetBranch)) {
+    $TargetBranch = "dev"
+}
+
+if ([string]::IsNullOrWhiteSpace($TfsBaseUrl)) {
+    $TfsBaseUrl = "http://dev.tellhowsoft.com/DefaultCollection"
+}
+
+if ([string]::IsNullOrWhiteSpace($RemoteHost)) {
+    $RemoteHost = "dev.tellhowsoft.com"
 }
 
 $script:Headers = New-TfsHeaders

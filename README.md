@@ -8,7 +8,7 @@ The skills cover four common workflows:
 
 - Querying and updating TFS work items through REST APIs.
 - Creating and closing daily TFS tasks.
-- Committing code to TFS Git and creating pull requests into `dev`.
+- Committing code to TFS Git and creating pull requests into a confirmed target branch.
 - Running an end-to-end flow from reviewed user story to local development branch and PR submission.
 
 ## Contents
@@ -55,12 +55,13 @@ Use this skill when finished code must be submitted to a TFS Git repository unde
 
 It enforces:
 
-- Never commit directly on `dev`.
-- Create a feature branch from `origin/dev`.
+- Never commit directly on the target/base branch.
+- Confirm the target branch on first use; default to `dev` only when the user does not specify another branch.
+- Create a feature branch from `origin/<targetBranch>`.
 - Use branch format `feature/<workItemId>-<tfsAlias>`, for example `feature/1551572-yangtao`.
 - Use commit subject format `type(#workItemId):area-summary`.
 - Use the exact commit subject as the PR title.
-- Create a PR into `dev`.
+- Create a PR into the confirmed target branch.
 - Enable auto-complete and source branch deletion.
 - Ensure the PR is linked to the TFS work item.
 
@@ -68,6 +69,12 @@ Bundled script:
 
 ```powershell
 skills/tfs-git-pr/scripts/New-TfsGitPullRequest.ps1
+```
+
+Cross-platform Python alternative:
+
+```bash
+python3 skills/tfs-git-pr/scripts/new_tfs_git_pull_request.py --help
 ```
 
 ### `tfs-dev-workflow`
@@ -78,7 +85,7 @@ It guides Codex to:
 
 - Pull reviewed user stories from a configured saved TFS query.
 - Ask the user for local repository paths instead of guessing repo mappings.
-- Create temporary feature branches from `origin/dev`.
+- Create temporary feature branches from `origin/<targetBranch>`.
 - Develop against the selected local repositories.
 - Delegate commit and PR submission to `tfs-git-pr`.
 - Update only the user story state to `已解决` after the user confirms completion.
@@ -89,6 +96,12 @@ Bundled scripts:
 skills/tfs-dev-workflow/scripts/Get-TfsSavedQueryWorkItems.ps1
 skills/tfs-dev-workflow/scripts/Start-TfsFeatureBranch.ps1
 skills/tfs-dev-workflow/scripts/Set-TfsWorkItemState.ps1
+```
+
+Cross-platform Python alternative:
+
+```bash
+python3 skills/tfs-dev-workflow/scripts/tfs_workflow.py --help
 ```
 
 ## Installation
@@ -107,6 +120,19 @@ Copy-Item -Recurse -Force "$repo\skills\tfs-git-pr" "$skillsHome\tfs-git-pr"
 Copy-Item -Recurse -Force "$repo\skills\tfs-dev-workflow" "$skillsHome\tfs-dev-workflow"
 ```
 
+macOS/Linux example:
+
+```bash
+repo="/path/to/this/repo"
+skills_home="${CODEX_HOME:-$HOME/.codex}/skills"
+
+mkdir -p "$skills_home"
+cp -R "$repo/skills/tfs-rest-api" "$skills_home/tfs-rest-api"
+cp -R "$repo/skills/tfs-daily-task" "$skills_home/tfs-daily-task"
+cp -R "$repo/skills/tfs-git-pr" "$skills_home/tfs-git-pr"
+cp -R "$repo/skills/tfs-dev-workflow" "$skills_home/tfs-dev-workflow"
+```
+
 Open a new Codex thread after installing or updating skills so the skill metadata is reloaded.
 
 ## Required Environment Variables
@@ -120,11 +146,31 @@ $env:TFS_PAT = "<your-personal-access-token>"
 Optional variables used by the higher-level workflow:
 
 ```powershell
-$env:TFS_USER_ALIAS = "yangtao"
+$env:TFS_USER_ALIAS = "your-alias"
 $env:TFS_USER_STORY_QUERY_URL = "http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_queries/query/<query-id>"
+$env:TFS_TARGET_BRANCH = "dev"
+$env:TFS_BASE_URL = "http://dev.tellhowsoft.com/DefaultCollection"
+$env:TFS_REPO_HOST = "dev.tellhowsoft.com"
+$env:TFS_ASSIGNED_TO = "TELLHOW\your-alias"
+$env:TFS_AREA_PATH = "XiNanArea-New\your-team"
 ```
 
 Do not commit PATs, passwords, generated request JSON files, logs, or local configuration files.
+
+On macOS/Linux, use the Python scripts with `python3`. The PowerShell scripts are also usable if PowerShell Core (`pwsh`) is installed.
+
+macOS/Linux environment example:
+
+```bash
+export TFS_PAT="<your-personal-access-token>"
+export TFS_USER_ALIAS="your-alias"
+export TFS_USER_STORY_QUERY_URL="http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_queries/query/<query-id>"
+export TFS_TARGET_BRANCH="dev"
+export TFS_BASE_URL="http://dev.tellhowsoft.com/DefaultCollection"
+export TFS_REPO_HOST="dev.tellhowsoft.com"
+export TFS_ASSIGNED_TO="TELLHOW\\your-alias"
+export TFS_AREA_PATH="XiNanArea-New\\your-team"
+```
 
 ## Typical Workflows
 
@@ -146,7 +192,7 @@ Ask Codex:
 开发完成了，提交到 TFS，用户情景 1551572，标题用 feat(#1551572):成都-配网拟票自动联想功能优化...
 ```
 
-Codex should use `tfs-git-pr`, create a feature branch from `origin/dev`, commit, push, create a PR targeting `dev`, enable auto-complete, delete the source branch on completion, and verify the work item link.
+Codex should use `tfs-git-pr`, confirm the target branch, create a feature branch from `origin/<targetBranch>`, commit, push, create a PR targeting that branch, enable auto-complete, delete the source branch on completion, and verify the work item link.
 
 ### Pull a reviewed TFS story and start development
 
@@ -156,15 +202,15 @@ Ask Codex:
 从 TFS 已评审需求里选一个巴中绩效相关需求，仓库路径是 C:\work\workSpaceTellHow\th-dc-biz-bazhong，开始开发。
 ```
 
-Codex should use `tfs-dev-workflow`, load candidates from the configured saved query, ask for confirmation when needed, create `feature/<workItemId>-<tfsAlias>` from `origin/dev`, then proceed with implementation.
+Codex should use `tfs-dev-workflow`, load candidates from the configured saved query, ask for confirmation when needed, create `feature/<workItemId>-<tfsAlias>` from `origin/<targetBranch>`, then proceed with implementation.
 
 ## Safety Rules
 
 These skills are intentionally conservative:
 
 - Do not print or store `TFS_PAT`.
-- Do not commit directly to `dev`.
-- Do not push directly to `dev`.
+- Do not commit directly to the target/base branch.
+- Do not push directly to the target/base branch.
 - Do not merge PRs manually.
 - Do not overwrite unrelated local changes.
 - Do not create TFS tasks unless the user requests task creation.

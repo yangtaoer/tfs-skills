@@ -7,7 +7,7 @@ Use this skill when the user says any of the following:
 - "提交到 TFS"
 - "提交到远程仓库"
 - "创建合并请求"
-- "创建 PR 到 dev"
+- "创建 PR"
 - "dev.tellhowsoft.com"
 - "代码开发完成，帮我提交"
 
@@ -37,13 +37,13 @@ Rules:
 
 ## Work Item Discovery
 
-If the user does not provide a work item id, first check this saved TFS query and choose the related user story before asking the user:
+If the user does not provide a work item id, first check the configured saved TFS query (`TFS_USER_STORY_QUERY_URL`) and choose the related user story before asking the user.
 
 ```text
 http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_queries/query/2fd5f73e-f5bc-4423-b289-7bcb1fb58977
 ```
 
-This query is a `oneHop` WorkItemLinks query. When using the REST API, do not rely only on `workItems`; parse `workItemRelations` and fetch the unique `source.id` and `target.id` work items. Prefer matching open or reviewed `用户情景` items by title, area, and the current code change. If none matches, ask the user for the work item id.
+The URL above is an example. Some saved queries are `oneHop` WorkItemLinks queries. When using the REST API, do not rely only on `workItems`; parse `workItemRelations` and fetch the unique `source.id` and `target.id` work items. Prefer matching open or reviewed `用户情景` items by title, area, and the current code change. If none matches, ask the user for the work item id.
 
 ## Type Selection
 
@@ -59,8 +59,9 @@ This query is a `oneHop` WorkItemLinks query. When using the REST API, do not re
 
 ## Branching
 
-- Start from `origin/dev`.
-- Do not commit on `dev`.
+- Confirm the target/base branch before branch creation. Use `TFS_TARGET_BRANCH` if set; otherwise use `dev` only as a fallback.
+- Start from `origin/<targetBranch>`.
+- Do not commit on the target/base branch.
 - Default branch: `feature/<workItemId>-<tfsAlias>`, for example `feature/1551572-yangtao`.
 - Get `<tfsAlias>` from the user or `TFS_USER_ALIAS`.
 - If a branch already exists and belongs to another unfinished task, create `feature/<workItemId>-<tfsAlias>-YYYYMMDD-HHmm`.
@@ -69,7 +70,7 @@ This query is a `oneHop` WorkItemLinks query. When using the REST API, do not re
 ## PR
 
 - Source branch: the feature branch.
-- Target branch: `dev`.
+- Target branch: confirmed target branch.
 - Title: exact commit subject.
 - Description: include source branch, target branch, and a concise change summary.
 - Auto-complete: set to enabled after creating or reusing the PR.

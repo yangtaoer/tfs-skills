@@ -3,18 +3,20 @@ Batch create and close TFS daily tasks for a date range.
 Skips weekends automatically. Accepts optional exclude dates (holidays, PTO).
 
 Usage (from Hermes execute_code or terminal):
-    py -3 scripts/batch_create_tasks.py --parent 1476929 --from 2026-05-25 --to 2026-05-29 --exclude 2026-05-27 --pat PAT_TOKEN
+    python3 scripts/batch_create_tasks.py --parent 1476929 --from 2026-05-25 --to 2026-05-29 --exclude 2026-05-27 --assigned-to DOMAIN\\alias --area PROJECT\\team
 
 If --pat is omitted, reads from the TFS_PAT environment variable.
+If --assigned-to or --area is omitted, reads from TFS_ASSIGNED_TO and TFS_AREA_PATH.
 """
 import json, subprocess, sys, os, argparse
 from datetime import datetime, timedelta
 
-TFS = "http://dev.tellhowsoft.com/DefaultCollection"
-PROJECT = "XiNanArea-New"
-AREA = "XiNanArea-New\\四川省区团队"
-ACTIVITY = "开发"
-HOURS = 8
+TFS = os.environ.get("TFS_BASE_URL", "http://dev.tellhowsoft.com/DefaultCollection").rstrip("/")
+PROJECT = os.environ.get("TFS_PROJECT", "XiNanArea-New")
+AREA = os.environ.get("TFS_AREA_PATH", "")
+ASSIGNED_TO = os.environ.get("TFS_ASSIGNED_TO", "")
+ACTIVITY = os.environ.get("TFS_ACTIVITY", "开发")
+HOURS = float(os.environ.get("TFS_DAILY_HOURS", "8"))
 
 
 def iteration_path_from_classification_path(path):
@@ -51,7 +53,7 @@ def get_iteration_for_date(date_str, pat):
     return None
 
 
-def create_task(date, title, detail, iteration, parent_id, pat):
+def create_task(date, title, detail, iteration, parent_id, pat, assigned_to, area, activity, hours):
     """Create a single task and return its ID."""
     desc = (f'<div>1、今日完成开发情况（{detail}）<br>'
             f'2、BUG修复情况（无）<br>'
@@ -59,14 +61,14 @@ def create_task(date, title, detail, iteration, parent_id, pat):
             f'4、其他（无）</div>')
     patch_data = [
         {"op": "add", "path": "/fields/System.Title", "value": title},
-        {"op": "add", "path": "/fields/System.AssignedTo", "value": "TELLHOW\\yangtao"},
-        {"op": "add", "path": "/fields/System.AreaPath", "value": AREA},
+        {"op": "add", "path": "/fields/System.AssignedTo", "value": assigned_to},
+        {"op": "add", "path": "/fields/System.AreaPath", "value": area},
         {"op": "add", "path": "/fields/System.IterationPath", "value": iteration},
-        {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate", "value": HOURS},
-        {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.RemainingWork", "value": HOURS},
+        {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate", "value": hours},
+        {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.RemainingWork", "value": hours},
         {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.StartDate", "value": f"{date}T00:30:00Z"},
         {"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.FinishDate", "value": f"{date}T09:30:00Z"},
-        {"op": "add", "path": "/fields/Microsoft.VSTS.Common.Activity", "value": ACTIVITY},
+        {"op": "add", "path": "/fields/Microsoft.VSTS.Common.Activity", "value": activity},
         {"op": "add", "path": "/fields/System.Description", "value": desc},
         {"op": "add", "path": "/relations/-", "value": {
             "rel": "System.LinkTypes.Hierarchy-Reverse",
@@ -92,12 +94,12 @@ def create_task(date, title, detail, iteration, parent_id, pat):
     return resp['id']
 
 
-def close_task(task_id, date, pat):
+def close_task(task_id, date, pat, hours):
     """Close a task by setting state to 已关闭."""
     close_data = [
         {"op": "replace", "path": "/fields/System.State", "value": "已关闭"},
-        {"op": "replace", "path": "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate", "value": HOURS},
-        {"op": "replace", "path": "/fields/Microsoft.VSTS.Scheduling.CompletedWork", "value": HOURS},
+        {"op": "replace", "path": "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate", "value": hours},
+        {"op": "replace", "path": "/fields/Microsoft.VSTS.Scheduling.CompletedWork", "value": hours},
         {"op": "replace", "path": "/fields/Microsoft.VSTS.Scheduling.TargetDate", "value": f"{date}T09:30:00Z"}
     ]
 
@@ -126,11 +128,21 @@ def main():
     parser.add_argument('--title-prefix', default='', help='Prefix for task titles')
     parser.add_argument('--detail', default='', help='Work description for all tasks')
     parser.add_argument('--pat', default='', help='PAT token')
+    parser.add_argument('--assigned-to', default=ASSIGNED_TO, help='TFS assignee, e.g. DOMAIN\\alias')
+    parser.add_argument('--area', default=AREA, help='TFS area path')
+    parser.add_argument('--activity', default=ACTIVITY, help='TFS activity field value')
+    parser.add_argument('--hours', type=float, default=HOURS, help='Original/remaining/completed hours')
     args = parser.parse_args()
 
     pat = args.pat or os.environ.get('TFS_PAT', '')
     if not pat:
         print("ERROR: No PAT provided. Use --pat or set TFS_PAT env var.")
+        sys.exit(1)
+    if not args.assigned_to:
+        print("ERROR: No assignee provided. Use --assigned-to or set TFS_ASSIGNED_TO.")
+        sys.exit(1)
+    if not args.area:
+        print("ERROR: No area path provided. Use --area or set TFS_AREA_PATH.")
         sys.exit(1)
 
     exclude = set(args.exclude)
@@ -159,13 +171,13 @@ def main():
             continue
         title = f"{args.title_prefix} - {d}" if args.title_prefix else f"日报-{d}"
         detail = args.detail or "日常开发工作"
-        task_id = create_task(d, title, detail, iteration, args.parent, pat)
+        task_id = create_task(d, title, detail, iteration, args.parent, pat, args.assigned_to, args.area, args.activity, args.hours)
         if task_id:
             created.append((d, task_id))
             print(f"  Created {task_id} for {d}")
 
     for d, task_id in created:
-        state = close_task(task_id, d, pat)
+        state = close_task(task_id, d, pat, args.hours)
         print(f"  Closed {task_id} for {d} -> {state}")
 
     print(f"\nDone: {len(created)} tasks created and closed.")
