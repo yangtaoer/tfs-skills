@@ -1,0 +1,4 @@
+interface:
+  display_name: "TFS Story Intake"
+  short_description: "Create TFS user stories with standard project titles"
+  default_prompt: "Use $tfs-story-intake to record a new TFS user story with a standard bracketed project name, description, and acceptance criteria."

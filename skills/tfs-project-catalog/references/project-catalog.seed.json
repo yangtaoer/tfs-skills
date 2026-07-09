@@ -1,0 +1,381 @@
+{
+  "version": 1,
+  "source": "四川省调-成都-重庆网络发令接口清单.xlsx",
+  "defaults": {
+    "areaPath": "XiNanArea-New\\四川省区团队",
+    "departmentRegion": "西南地区部",
+    "province": "四川",
+    "needProductSupport": "否",
+    "needMeetingDiscussion": "否",
+    "developmentDepartment": "地区部",
+    "deliveryOwner": "杨涛(四川)",
+    "productLine": "调度产品线",
+    "fallbackProductName": "临时项目交付"
+  },
+  "projects": [
+    {
+      "standardName": "四川省调网络发令",
+      "aliases": ["四川省调", "省调网络发令", "四川省调网络发令系统"],
+      "keywords": ["四川省调", "省调", "网络发令", "调度"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "repos": [
+        {
+          "name": "dcsd-certify-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-srv-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuan",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "webservice-scczp",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/webservice-scczp",
+          "targetBranch": "dev_sd",
+          "role": "interface",
+          "module": "三区接口程序",
+          "codeArea": "DCS",
+          "description": "涉及对外接口，调度所在三区区域"
+        },
+        {
+          "name": "webservice-scczp",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/webservice-scczp",
+          "targetBranch": "dev_sd_two",
+          "role": "interface",
+          "module": "二区接口程序",
+          "codeArea": "DCS",
+          "description": "涉及对外接口，电厂所在二区区域"
+        },
+        {
+          "name": "dcsd-vertical-interface-dispatch-srv",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-vertical-interface-dispatch-srv",
+          "targetBranch": "dev",
+          "role": "interface",
+          "module": "省调纵向接口",
+          "codeArea": "DCS",
+          "description": "涉及与大渡河、雅砻江集控的纵向接口"
+        }
+      ]
+    },
+    {
+      "standardName": "成都网络发令",
+      "aliases": ["成都网络发令"],
+      "keywords": ["成都", "网络发令", "成都网络发令"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "repos": [
+        {
+          "name": "dcsd-certify-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-srv-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "webservice-scczp",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/webservice-scczp",
+          "targetBranch": "dev_cd",
+          "role": "interface",
+          "module": "接口程序",
+          "codeArea": "DCS",
+          "description": "涉及对外接口"
+        }
+      ]
+    },
+    {
+      "standardName": "成都网络发令app",
+      "aliases": ["成都app"],
+      "keywords": ["成都", "网络发令", "app", "APP"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "productName": "网络发令移动应用",
+      "repos": [
+        {
+          "name": "dcsd-app-ui",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-app-ui",
+          "targetBranch": "sichuan-dev",
+          "role": "frontend",
+          "module": "前端",
+          "codeArea": "DCS",
+          "description": "app前端代码"
+        },
+        {
+          "name": "dcsd-app-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-app-starter",
+          "targetBranch": "dcsd-app-starter-sichuan",
+          "role": "backend",
+          "module": "后端",
+          "codeArea": "DCS",
+          "description": "app后端代码"
+        }
+      ]
+    },
+    {
+      "standardName": "重庆网络发令",
+      "aliases": ["重庆D6.0网络指挥系统", "重庆市调"],
+      "keywords": ["重庆", "网络发令", "网络指挥", "重庆市调"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "repos": [
+        {
+          "name": "dcsd-certify-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-common-srv-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-common-srv-chongqing",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-machineset-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-machineset-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-srv-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-chongqing",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-report-ui-chongqing",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-chongqing",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "chongqing",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "主程序所在仓库；Excel备注：dcsd-springboot-starter使用chongqing，其余是dev"
+        }
+      ]
+    },
+    {
+      "standardName": "巴中自巡航系统",
+      "aliases": ["巴中自巡航"],
+      "keywords": ["巴中", "自巡航", "考试系统", "网盘", "绩效考核", "定值单"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "临时项目交付",
+      "repos": [
+        {
+          "name": "th-dc-biz-bazhong",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_git/th-dc-biz-bazhong",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "独立程序",
+          "codeArea": "XiNanArea-New",
+          "description": "主要开发巴中自巡航的附属功能，例如考试系统、网盘、绩效考核、定值单等"
+        }
+      ]
+    }
+  ]
+}

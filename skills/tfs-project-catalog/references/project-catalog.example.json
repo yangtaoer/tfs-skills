@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "standardName": "四川省调网络发令系统",
+      "aliases": ["省调网络发令", "四川省调"],
+      "keywords": ["省调", "网络发令", "调度"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "repos": [
+        {
+          "name": "example-backend-repo",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_git/example-backend-repo",
+          "targetBranch": "dev",
+          "role": "backend",
+          "keywords": ["api", "service"]
+        },
+        {
+          "name": "example-frontend-repo",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/XiNanArea-New/_git/example-frontend-repo",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "keywords": ["web", "page"]
+        }
+      ]
+    }
+  ]
+}

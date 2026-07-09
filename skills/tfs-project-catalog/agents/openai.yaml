@@ -1,0 +1,4 @@
+interface:
+  display_name: "TFS Project Catalog"
+  short_description: "Resolve TFS project names, aliases, repos, and branches"
+  default_prompt: "Use $tfs-project-catalog to resolve the standard project name, aliases, repositories, and base branches for a TFS requirement."

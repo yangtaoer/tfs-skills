@@ -4,10 +4,15 @@ This repository collects Codex skills for working with an on-premise TFS / Azure
 
 GitHub: https://github.com/yangtaoer/tfs-skills
 
-The skills cover four common workflows:
+中文文档: [README.zh-CN.md](README.zh-CN.md)
+
+The skills cover seven common workflows:
 
 - Querying and updating TFS work items through REST APIs.
 - Creating and closing daily TFS tasks.
+- Maintaining standard project names, aliases, repositories, and base branches.
+- Creating user stories with bracketed standard project names.
+- Resolving a TFS requirement into a local multi-repository workspace.
 - Committing code to TFS Git and creating pull requests into a confirmed target branch.
 - Running an end-to-end flow from reviewed user story to local development branch and PR submission.
 
@@ -17,6 +22,9 @@ The skills cover four common workflows:
 skills/
 ├── tfs-rest-api/        # Low-level TFS REST API workflow and examples
 ├── tfs-daily-task/      # Daily task creation, backfill, and task closing workflow
+├── tfs-project-catalog/ # Standard project name, alias, repo, and branch catalog
+├── tfs-story-intake/    # User story intake with bracketed standard project titles
+├── tfs-requirement-workspace/ # Requirement -> local multi-repo workspace resolver
 ├── tfs-git-pr/          # Git branch, commit, push, PR, auto-complete, work item link workflow
 └── tfs-dev-workflow/    # End-to-end user story -> local repo -> branch -> PR workflow
 ```
@@ -48,6 +56,54 @@ It supports:
 - Matching `System.IterationPath` by task start date.
 - Backfilling missing workdays.
 - Reusing the nearest parent user story when appropriate.
+
+### `tfs-project-catalog`
+
+Use this skill when Codex needs to resolve project aliases, standard project names, repositories, and base branches.
+
+It enforces:
+
+- User story titles use `【标准项目名】`.
+- Aliases such as `省调网络发令` and `四川省调` resolve to one standard project name.
+- The catalog stores project repositories, remote URLs, roles, and target branches.
+- Local machine paths stay in local workspace/index files unless intentionally tracked.
+
+Seed catalog:
+
+```text
+skills/tfs-project-catalog/references/project-catalog.seed.json
+```
+
+Bundled resolver:
+
+```powershell
+py -3 skills/tfs-project-catalog/scripts/resolve_tfs_workspace.py --help
+```
+
+### `tfs-story-intake`
+
+Use this skill when creating or normalizing TFS `用户情景`.
+
+It supports:
+
+- Resolving the affected project through `tfs-project-catalog`.
+- Rewriting story titles to `【标准项目名】简洁需求标题`.
+- Supporting multiple projects with multiple bracket blocks.
+- Drafting description and acceptance criteria.
+- Searching for likely duplicate active stories before creation.
+
+### `tfs-requirement-workspace`
+
+Use this skill after a TFS requirement exists and Codex needs to find the local repositories involved in development.
+
+It supports:
+
+- Parsing bracketed standard project names from the story title.
+- Resolving all repositories for one or more projects.
+- Scanning configured local repo roots.
+- Matching local repos by remote URL first, then repo name.
+- Producing a local workspace JSON for the requirement.
+- Handing the confirmed workspace to `tfs-dev-workflow`.
 
 ### `tfs-git-pr`
 
@@ -116,6 +172,9 @@ $skillsHome = "$env:USERPROFILE\.codex\skills"
 
 Copy-Item -Recurse -Force "$repo\skills\tfs-rest-api" "$skillsHome\tfs-rest-api"
 Copy-Item -Recurse -Force "$repo\skills\tfs-daily-task" "$skillsHome\tfs-daily-task"
+Copy-Item -Recurse -Force "$repo\skills\tfs-project-catalog" "$skillsHome\tfs-project-catalog"
+Copy-Item -Recurse -Force "$repo\skills\tfs-story-intake" "$skillsHome\tfs-story-intake"
+Copy-Item -Recurse -Force "$repo\skills\tfs-requirement-workspace" "$skillsHome\tfs-requirement-workspace"
 Copy-Item -Recurse -Force "$repo\skills\tfs-git-pr" "$skillsHome\tfs-git-pr"
 Copy-Item -Recurse -Force "$repo\skills\tfs-dev-workflow" "$skillsHome\tfs-dev-workflow"
 ```
@@ -129,6 +188,9 @@ skills_home="${CODEX_HOME:-$HOME/.codex}/skills"
 mkdir -p "$skills_home"
 cp -R "$repo/skills/tfs-rest-api" "$skills_home/tfs-rest-api"
 cp -R "$repo/skills/tfs-daily-task" "$skills_home/tfs-daily-task"
+cp -R "$repo/skills/tfs-project-catalog" "$skills_home/tfs-project-catalog"
+cp -R "$repo/skills/tfs-story-intake" "$skills_home/tfs-story-intake"
+cp -R "$repo/skills/tfs-requirement-workspace" "$skills_home/tfs-requirement-workspace"
 cp -R "$repo/skills/tfs-git-pr" "$skills_home/tfs-git-pr"
 cp -R "$repo/skills/tfs-dev-workflow" "$skills_home/tfs-dev-workflow"
 ```
@@ -173,6 +235,28 @@ export TFS_AREA_PATH="XiNanArea-New\\your-team"
 ```
 
 ## Typical Workflows
+
+### Record a new TFS user story with a standard project title
+
+Ask Codex:
+
+```text
+帮我录一个 TFS 用户情景，省调网络发令需要新增发令审核提醒，验收标准是审核人能收到提醒并跳转到待办。
+```
+
+Codex should use `tfs-project-catalog` to resolve the standard project name, then use `tfs-story-intake` to draft a title like `【四川省调网络发令】新增发令审核提醒`, description, and acceptance criteria before creating the story.
+
+New stories default to `新建`, area `XiNanArea-New\四川省区团队`, the iteration matching the current date, `西南地区部`, province `四川`, product support `否`, meeting discussion `否`, development department `地区部`, delivery owner `杨涛(四川)`, product line `调度产品线`, and a catalog/product-context product name or `临时项目交付`.
+
+### Resolve a requirement into local repositories
+
+Ask Codex:
+
+```text
+开始 1551572 这个需求，帮我找到它涉及的本地仓库并准备开发工作区。
+```
+
+Codex should use `tfs-requirement-workspace`, parse bracketed project names from the story title, resolve repositories from the catalog, scan local repo roots, create a workspace JSON, and ask for confirmation before branch preparation.
 
 ### Create a daily TFS task
 
@@ -228,7 +312,8 @@ Get-ChildItem .\skills -Recurse -Filter *.ps1 | ForEach-Object {
 }
 
 # Search for obvious TODO placeholders
-Select-String -Path .\skills\*\*.md,.\README.md -Pattern "TODO","[TODO" -SimpleMatch
+Select-String -Path .\skills\*\*.md,.\README.md,.\README.zh-CN.md -Pattern "TODO","[TODO" -SimpleMatch |
+  Where-Object { $_.Line -notmatch "TODO placeholders|TODO 占位|Select-String -Path" }
 ```
 
 Some Codex skill validation scripts require `PyYAML`. If it is not installed, validate frontmatter manually or install the dependency in your local Python environment.

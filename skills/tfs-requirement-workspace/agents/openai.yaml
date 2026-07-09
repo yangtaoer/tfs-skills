@@ -1,0 +1,4 @@
+interface:
+  display_name: "TFS Requirement Workspace"
+  short_description: "Resolve multi-repo workspaces for TFS requirements"
+  default_prompt: "Use $tfs-requirement-workspace to turn a TFS requirement into a confirmed local multi-repository workspace with feature branches."

@@ -10,6 +10,9 @@ tfs_update.json
 *.log
 *.jsonl
 *.archive
+.tfs-workspaces/
+repo-index.local.json
+tfs-repo-index.local.json
 
 # Python / PowerShell caches
 __pycache__/

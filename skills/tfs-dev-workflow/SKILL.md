@@ -19,6 +19,7 @@ On first use, collect these values if they are not already known:
 - Target/base branch for the repository. It can also be supplied through `TFS_TARGET_BRANCH`; use `dev` only as a fallback after confirming no repo-specific branch was provided.
 - TFS base URL and repository host if they differ from `http://dev.tellhowsoft.com/DefaultCollection` and `dev.tellhowsoft.com`. They can be supplied through `TFS_BASE_URL` and `TFS_REPO_HOST`.
 - One or more local repository paths involved in the change. Do not infer a repo mapping unless the user provides it.
+- Requirement workspace JSON path, if `tfs-requirement-workspace` already resolved the requirement.
 
 Current user's query example:
 
@@ -31,7 +32,8 @@ That query is expected to return reviewed requirements. The requirement state to
 ## Required Behavior
 
 - Always use the saved query or an explicit work item id to select the requirement.
-- Ask the user for local repository path(s). Many features span multiple repos and one startup repo, so do not rely on static module-to-repo mapping.
+- If a requirement workspace JSON exists, use its confirmed repository paths and target branches instead of asking again.
+- If no workspace exists, ask the user for local repository path(s). Many features span multiple repos and one startup repo, so do not rely on static module-to-repo mapping unless `tfs-requirement-workspace` has produced a confirmed workspace.
 - Before any requirement code exploration or edits, confirm the target/base branch for each involved repository, then update from the latest `origin/<targetBranch>`.
 - For each repo that needs changes, start from `origin/<targetBranch>` and create a temporary branch named `feature/<workItemId>-<tfsAlias>`, for example `feature/1551572-yangtao`.
 - Never commit directly to the target/base branch and never push directly to it.
@@ -54,6 +56,8 @@ That query is expected to return reviewed requirements. The requirement state to
    - Extract the region/module phrase for commit messages, such as `成都-...`.
 
 3. **Collect workspace**
+   - If the user provides a workspace JSON, read it and use the listed repositories whose `matchStatus` is `found`.
+   - If a repo is `missing`, `remote-mismatch`, or `needs-confirmation`, resolve that before branch preparation.
    - Ask for local repository path(s) that need changes.
    - For multi-repo work, repeat branch preparation and later PR submission per changed repo.
    - If a path is not a git repo or does not point to the configured TFS repository host, stop and ask for the correct path.
@@ -93,5 +97,6 @@ That query is expected to return reviewed requirements. The requirement state to
 
 - Read `references/configuration.md` when setting up saved query URL, user alias, or repo paths.
 - Read `references/workflow-rules.md` before executing the workflow.
+- Use `tfs-requirement-workspace` when a work item title contains `【标准项目名】` and the repository list should be resolved from the project catalog.
 - Use existing `tfs-git-pr` for the commit and PR phase.
 - On macOS/Linux, prefer `scripts/tfs_workflow.py`; use PowerShell scripts only when `pwsh` is available.
