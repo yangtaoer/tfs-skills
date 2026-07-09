@@ -1,10 +1,10 @@
 # Codex TFS Skills
 
+[中文文档](README.zh-CN.md)
+
 This repository collects Codex skills for working with an on-premise TFS / Azure DevOps Server environment.
 
 GitHub: https://github.com/yangtaoer/tfs-skills
-
-中文文档: [README.zh-CN.md](README.zh-CN.md)
 
 The skills cover seven common workflows:
 
