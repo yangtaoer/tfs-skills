@@ -1,6 +1,6 @@
 ---
 name: tfs-git-pr
-description: Commit finished code changes to Azure DevOps Server/TFS Git repositories and create pull requests into the confirmed target branch. Use when the user asks to submit code to TFS, push to a TFS remote repository such as dev.tellhowsoft.com, create a merge/pull request, or finish development by committing and handing off code. Enforces the local workflow: never commit directly to the target/base branch, confirm or configure the target branch, create or use a feature branch based on origin/<targetBranch>, commit with type(#workItemId):area-summary, push the feature branch, create a PR with the commit message as the PR title, set auto-complete to enabled with source branch deletion, and ensure the TFS work item is linked.
+description: "Commit finished code changes to Azure DevOps Server/TFS Git repositories and create pull requests into the confirmed target branch. Use when the user asks to submit code to TFS, push to a TFS remote repository such as dev.tellhowsoft.com, create a merge/pull request, or finish development by committing and handing off code. Enforces the local workflow: never commit directly to the target/base branch, confirm or configure the target branch, create or use a feature branch based on the configured origin target branch, commit with type(#workItemId):area-summary, push the feature branch, create a PR with the commit message as the PR title, set auto-complete to enabled with source branch deletion, and ensure the TFS work item is linked."
 ---
 
 # TFS Git PR
@@ -12,6 +12,7 @@ The workflow protects the base branch, standardizes commit messages, and makes T
 
 ## Core Rules
 
+- Before staging or publishing, classify each changed repository and path as project-specific or shared. Do not commit, push, or create a PR for unconfirmed shared-code changes made for a regional requirement. If the scope is uncertain, stop and ask the user to confirm the exact shared repository and accepted impact.
 - Treat configured TFS remotes as Azure DevOps Server repositories. Default host is `dev.tellhowsoft.com`; override with `TFS_REPO_HOST` when needed.
 - Never commit directly on the target/base branch or push directly to it.
 - Confirm the target/base branch on first use. Use `TFS_TARGET_BRANCH` if set; otherwise use `dev` only as a fallback.
@@ -40,7 +41,7 @@ feat(#1551572):成都-配网拟票自动联想功能优化：命令模式交互�
 
 ## Workflow
 
-1. Locate the repository and confirm its `origin` remote points to the configured TFS host.
+1. Locate the repository, confirm its `origin` remote points to the configured TFS host, and verify that any shared-code scope was explicitly approved.
 2. Inspect `git status --short --branch`, current branch, remotes, and recent commits.
 3. Identify the work item id. If the user has not provided it, first execute the configured saved TFS query and pick the most relevant user story by title/area/state. Saved queries may be one-hop link queries, so inspect `workItemRelations` as well as `workItems`. If no relevant user story is found, ask the user for the id before committing.
 4. Build the commit subject using `type(#workItemId):area-summary`. If the user gives an exact commit message, use it as-is after checking the format.
