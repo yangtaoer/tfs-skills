@@ -10,6 +10,15 @@ description: End-to-end TFS development workflow for pulling reviewed user stori
 Use this skill for the full path from TFS requirement selection to local development and PR submission.
 It composes `tfs-rest-api` for TFS work items and `tfs-git-pr` for commit, push, PR, auto-complete, and work item linking.
 
+## First Principle: Protect Shared Regional Code
+
+- Treat repositories, modules, classes, APIs, and configuration used by multiple regions or provinces as protected shared code by default.
+- Prefer region-specific or project-specific repositories, extension points, controllers, configuration, and frontend routing for a regional requirement.
+- Determine the impact scope before editing: inspect repository/module naming, dependencies, call sites, deployment composition, and existing regional overrides.
+- If the scope is uncertain, or a regional requirement appears to require changing shared code, stop before editing and tell the user which shared repository or path would change, why it seems necessary, and which other regions may be affected. Proceed only after explicit user confirmation.
+- Do not treat a generic request such as "complete this work item" as permission to modify shared code.
+- Add isolated code in a shared repository only when it cannot change existing behavior for other regions and its activation is explicitly region-scoped. When that guarantee is unclear, ask the user first.
+
 ## Configuration
 
 On first use, collect these values if they are not already known:
@@ -31,6 +40,7 @@ That query is expected to return reviewed requirements. The requirement state to
 
 ## Required Behavior
 
+- Apply the shared-code protection principle before selecting repositories or exploring implementation paths.
 - Always use the saved query or an explicit work item id to select the requirement.
 - If a requirement workspace JSON exists, use its confirmed repository paths and target branches instead of asking again.
 - If no workspace exists, ask the user for local repository path(s). Many features span multiple repos and one startup repo, so do not rely on static module-to-repo mapping unless `tfs-requirement-workspace` has produced a confirmed workspace.
@@ -54,12 +64,14 @@ That query is expected to return reviewed requirements. The requirement state to
    - Read title, state, area, iteration, description, acceptance criteria, and relations.
    - Confirm the state is `已评审` unless the user intentionally wants another item.
    - Extract the region/module phrase for commit messages, such as `成都-...`.
+   - Classify candidate repositories and code paths as project-specific or shared before choosing where to implement.
 
 3. **Collect workspace**
    - If the user provides a workspace JSON, read it and use the listed repositories whose `matchStatus` is `found`.
    - If a repo is `missing`, `remote-mismatch`, or `needs-confirmation`, resolve that before branch preparation.
    - Ask for local repository path(s) that need changes.
    - For multi-repo work, repeat branch preparation and later PR submission per changed repo.
+   - Require explicit user confirmation before adding a protected shared repository to the change set for a regional requirement.
    - If a path is not a git repo or does not point to the configured TFS repository host, stop and ask for the correct path.
 
 4. **Update from target branch**

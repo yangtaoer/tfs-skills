@@ -1,5 +1,13 @@
 # Commit and PR Rules
 
+## Shared Code Gate
+
+- Treat code used by multiple regions or provinces as protected shared code.
+- For a regional requirement, prefer a regional/project-specific repository or extension point.
+- Before staging, verify that every shared repository or shared path in the diff was explicitly approved by the user after its cross-region impact was explained.
+- If approval is missing or impact is uncertain, do not commit, push, create a PR, or enable auto-complete; stop and ask the user.
+- Do not treat a general instruction to finish or submit the work item as shared-code approval.
+
 ## Trigger Phrases
 
 Use this skill when the user says any of the following:

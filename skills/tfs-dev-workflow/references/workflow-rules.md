@@ -1,5 +1,15 @@
 # Workflow Rules
 
+## First Principle: Protect Shared Regional Code
+
+- Classify every candidate repository, module, class, API, and configuration path as project-specific or shared before editing.
+- Prefer regional/project-specific extension points over changes to code used by multiple regions or provinces.
+- Do not change existing shared behavior for a regional requirement unless the user explicitly approves after being told the exact shared repository/path, the reason, and the likely cross-region impact.
+- Do not infer that approval from a generic request to complete a requirement.
+- Allow new code in a shared repository only when it is isolated, region-scoped, and cannot affect existing consumers; ask the user when any of those conditions is uncertain.
+- Re-check the changed repository list before commit and PR creation. If it contains an unconfirmed shared repository, stop and request confirmation.
+- If an unapproved shared-code PR already exists and the user has explicitly disallowed that scope, prevent accidental merge and replace it with a regional implementation.
+
 ## Requirement Selection
 
 - Use a configured saved query to find reviewed user stories.
