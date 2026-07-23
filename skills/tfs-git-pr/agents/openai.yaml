@@ -1,4 +1,4 @@
 interface:
   display_name: "TFS Git PR"
   short_description: "Commit TFS code and create PRs"
-  default_prompt: "Use $tfs-git-pr to commit my finished changes to TFS Git and create a pull request into the confirmed target branch."
+  default_prompt: "Use $tfs-git-pr to publish my finished changes, create linked TFS PRs, and switch my clean main IDE workspace to the PR source branches for testing."

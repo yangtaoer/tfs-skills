@@ -47,6 +47,14 @@ feature/1551572-yangtao
 - Configure source branch deletion through PR completion options.
 - Do not merge PR manually.
 
+## Local Testing Handoff
+
+- After successful PR creation, prepare the user's main IDE workspace immediately; do not wait for PR merge.
+- For each changed repository, verify the temporary worktree is clean and fully pushed, verify the main repository is clean, then remove the temporary worktree with `git worktree remove` and prune stale metadata.
+- Switch the main repository to the PR source branch and verify its upstream and clean status.
+- For multi-repository changes, place every involved main-workspace repository on the intended feature branch before telling the user local testing is ready.
+- If any safety check fails, preserve both worktrees and report the exact path and reason. Never force removal or overwrite local changes.
+
 ## TFS Updates
 
 - After the user confirms the requirement is complete, update only the user story state to `已解决`.
