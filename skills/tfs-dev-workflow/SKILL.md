@@ -1,6 +1,6 @@
 ---
 name: tfs-dev-workflow
-description: End-to-end TFS development workflow for pulling reviewed user stories from a saved TFS query, using a user-provided local workspace/repository, confirming user-specific settings and target branch, preparing a temporary feature branch from the confirmed base branch, guiding code development, submitting a pull request, enabling auto-complete with source-branch deletion, and optionally marking the user story resolved after completion. Use when the user asks to pull requirements from TFS, start development from a TFS user story, find a local workspace for a requirement, finish development and submit a PR, or perform the full TFS-to-code-to-PR workflow.
+description: End-to-end TFS development workflow for pulling reviewed user stories from a saved query, developing from a confirmed target branch in temporary feature worktrees, submitting linked pull requests, and preparing the user's main IDE workspace for local testing on the PR source branches. Use when the user asks to pull requirements from TFS, start development from a TFS user story, find a local workspace, finish development and submit PRs, or perform the full TFS-to-code-to-PR workflow including safe post-PR worktree cleanup and workspace switching.
 ---
 
 # TFS Dev Workflow
@@ -52,6 +52,8 @@ That query is expected to return reviewed requirements. The requirement state to
 - Do not merge PRs. Set auto-complete on the PR and configure source branch deletion after completion.
 - Do not delete local or remote branches directly. Source branch deletion should be handled by PR completion options.
 - Do not overwrite unrelated local changes. If a repo is dirty before the workflow starts, inspect and preserve user changes.
+- After all PRs are submitted successfully, clean up temporary worktrees and switch the corresponding clean repositories in the user's main IDE workspace to the PR source branch for local testing. Do not wait for PR merge.
+- Never perform this handoff when the main repository or temporary worktree is dirty, the feature commit is not pushed, or the main-workspace mapping is uncertain.
 
 ## Workflow
 
@@ -90,6 +92,8 @@ That query is expected to return reviewed requirements. The requirement state to
 
 7. **Submit PR**
    - Use `tfs-git-pr` to stage intended files, commit, push, create PR to the confirmed target branch, set auto-complete, delete source branch on completion, and link the work item.
+   - After each PR is created, use the `tfs-git-pr` main-workspace handoff procedure to remove the clean temporary worktree and switch the corresponding clean repository in the user's IDEA/main workspace to the PR source branch.
+   - Complete the handoff immediately; do not wait for PR merge. For multi-repository work, verify every involved repository is on the same intended feature branch before reporting readiness for local testing.
    - Commit/PR title format:
 
      ```text
@@ -104,6 +108,7 @@ That query is expected to return reviewed requirements. The requirement state to
    - Report requirement id/title.
    - Report repo path(s), branch(es), commit title(s), PR URL(s), and auto-complete/source deletion status.
    - Explain that checks were not run by default and the user should self-test.
+   - Report which temporary worktrees were removed and the branch now selected in each main-workspace repository. If handoff was skipped, report the dirty or ambiguous path that blocked it.
 
 ## References
 

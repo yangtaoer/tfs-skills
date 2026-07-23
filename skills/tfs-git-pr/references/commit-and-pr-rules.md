@@ -84,3 +84,13 @@ The URL above is an example. Some saved queries are `oneHop` WorkItemLinks queri
 - Auto-complete: set to enabled after creating or reusing the PR.
 - Source branch deletion: enable through PR completion options.
 - Verify work item linking from the PR side. If no work item is listed, explicitly add a `Pull Request` ArtifactLink to the work item.
+
+## Post-PR Main Workspace Handoff
+
+- Perform the handoff immediately after successful PR creation; PR merge is not required.
+- Preserve the user's primary IDE workspace path for every repository when creating temporary worktrees.
+- Before removing a temporary worktree, verify both it and the main repository are clean and verify its HEAD equals `origin/<sourceBranch>`.
+- Remove worktrees with `git worktree remove`, never by deleting their directories directly; follow with `git worktree prune`.
+- Switch each clean main repository to the PR source branch and verify its upstream and status so the user can test the complete multi-repository change in the IDE.
+- If any repository is dirty, has unpushed commits, is locked, or cannot be mapped unambiguously to the main workspace, leave it unchanged and report the blocker.
+- Do not delete local or remote feature branches during handoff. Remote deletion remains a PR completion option.
