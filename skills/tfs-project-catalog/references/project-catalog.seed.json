@@ -20,6 +20,20 @@
       "areaPath": "XiNanArea-New\\四川省区团队",
       "defaultTargetBranch": "dev",
       "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 1974,
+          "name": "标准版springboot-四川省调",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=1974",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuan",
+          "artifactName": "drop"
+        }
+      ],
       "repos": [
         {
           "name": "dcsd-certify-ui-sichuan",
@@ -138,6 +152,20 @@
       "areaPath": "XiNanArea-New\\四川省区团队",
       "defaultTargetBranch": "dev",
       "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 1972,
+          "name": "标准版springboot-四川成都操作票",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=1972",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuancd",
+          "artifactName": "drop"
+        }
+      ],
       "repos": [
         {
           "name": "dcsd-certify-ui-sichuancd-dm",
@@ -238,6 +266,20 @@
       "areaPath": "XiNanArea-New\\四川省区团队",
       "defaultTargetBranch": "dev",
       "productName": "调度运行指挥平台",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 8442,
+          "name": "标准版springboot-四川资阳",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=8442",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanzy",
+          "artifactName": "drop"
+        }
+      ],
       "repos": [
         {
           "name": "dcsd-certify-ui-sichuancd-dm",

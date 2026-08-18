@@ -15,6 +15,7 @@ The catalog is the source of truth for:
 - Project aliases, such as `省调网络发令` and `四川省调` mapping to `四川省调网络发令系统`.
 - Repositories involved in each project.
 - Base branches for those repositories.
+- Delivery pipeline definitions, source branches, and definition URLs when known.
 - Optional keywords and roles for frontend/backend/service matching.
 
 ## Required Files
@@ -73,6 +74,7 @@ When resolving a project, report:
 - Standard project name.
 - Matched input term, such as alias or bracket value.
 - Repositories, role, remote URL, and target branch.
+- Delivery pipelines, including purpose, definition ID, definition URL, and source branch.
 - Whether each repo was found locally.
 - Ambiguities that require user confirmation.
 

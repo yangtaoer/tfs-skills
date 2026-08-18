@@ -45,6 +45,7 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     names: set[str] = set()
     aliases: dict[str, str] = {}
+    pipeline_ids: set[tuple[str, int]] = set()
     for project in catalog.get("projects", []):
         name = str(project.get("standardName", "")).strip()
         if not name:
@@ -60,6 +61,27 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
             if alias in aliases and aliases[alias] != name:
                 errors.append(f"alias maps to multiple projects: {alias}")
             aliases[alias] = name
+        for pipeline in project.get("pipelines", []) or []:
+            tfs_project = str(pipeline.get("tfsProject") or "").strip()
+            definition_id = pipeline.get("definitionId")
+            if not tfs_project:
+                errors.append(f"{name}: pipeline missing tfsProject")
+            if not isinstance(definition_id, int) or definition_id <= 0:
+                errors.append(f"{name}: pipeline has invalid definitionId: {definition_id}")
+            elif (tfs_project, definition_id) in pipeline_ids:
+                errors.append(f"duplicate pipeline definition: {tfs_project}/{definition_id}")
+            else:
+                pipeline_ids.add((tfs_project, definition_id))
+            source_branch = str(pipeline.get("sourceBranch") or "")
+            if not source_branch.startswith("refs/heads/"):
+                errors.append(
+                    f"{name}/{definition_id}: sourceBranch must start with refs/heads/: {source_branch}"
+                )
+            definition_url = str(pipeline.get("definitionUrl") or "")
+            if f"definitionId={definition_id}" not in definition_url:
+                errors.append(
+                    f"{name}/{definition_id}: definitionUrl must contain matching definitionId"
+                )
         for repo in project.get("repos", []) or []:
             remote = norm_remote(repo.get("remote"))
             if not repo.get("name"):
@@ -216,9 +238,34 @@ def build_workspace(args: argparse.Namespace) -> dict[str, Any]:
         "featureBranch": feature_branch,
         "notes": notes,
         "repos": [],
+        "pipelines": [],
     }
+    seen_pipelines: set[tuple[str, int]] = set()
     seen_targets: set[tuple[str, str, str]] = set()
     for project in projects:
+        for pipeline in project.get("pipelines", []) or []:
+            pipeline_key = (
+                str(pipeline.get("tfsProject") or ""),
+                int(pipeline.get("definitionId") or 0),
+            )
+            if pipeline_key in seen_pipelines:
+                continue
+            seen_pipelines.add(pipeline_key)
+            workspace["pipelines"].append(
+                {
+                    "project": project.get("standardName"),
+                    "purpose": pipeline.get("purpose", ""),
+                    "definitionId": pipeline.get("definitionId"),
+                    "name": pipeline.get("name", ""),
+                    "definitionUrl": pipeline.get("definitionUrl", ""),
+                    "folderPath": pipeline.get("folderPath", ""),
+                    "tfsProject": pipeline.get("tfsProject", ""),
+                    "repository": pipeline.get("repository", ""),
+                    "sourceBranch": pipeline.get("sourceBranch", ""),
+                    "buildProfile": pipeline.get("buildProfile", ""),
+                    "artifactName": pipeline.get("artifactName", ""),
+                }
+            )
         project_branch = project.get("defaultTargetBranch") or args.target_branch or ""
         for repo in project.get("repos", []) or []:
             remote = repo.get("remote", "")
