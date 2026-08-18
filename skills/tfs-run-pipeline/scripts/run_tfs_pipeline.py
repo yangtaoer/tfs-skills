@@ -265,8 +265,13 @@ def wait_for_build(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project-name", required=True, help="Standard project name or exact alias")
+    parser.add_argument("--project-name", help="Standard project name or exact alias")
     parser.add_argument("--catalog", default=str(default_catalog_path()), help="Project catalog JSON")
+    parser.add_argument(
+        "--list-projects",
+        action="store_true",
+        help="List cataloged delivery pipelines without contacting TFS",
+    )
     parser.add_argument("--definition-id", type=int, help="Select one cataloged definition explicitly")
     parser.add_argument("--base-url", default=os.environ.get("TFS_BASE_URL", DEFAULT_BASE_URL))
     parser.add_argument("--source-branch", default="", help="Optional branch override")
@@ -281,6 +286,40 @@ def main() -> int:
 
     try:
         catalog = load_json(Path(args.catalog))
+        if args.list_projects:
+            if any(
+                (
+                    args.project_name,
+                    args.definition_id,
+                    args.source_branch,
+                    args.check_definition,
+                    args.confirm_run,
+                    args.build_id,
+                    args.force_new,
+                )
+            ):
+                raise ValueError("--list-projects cannot be combined with run options")
+            pipelines = []
+            for catalog_project in catalog.get("projects", []) or []:
+                for catalog_pipeline in catalog_project.get("pipelines", []) or []:
+                    if catalog_pipeline.get("purpose") != "delivery":
+                        continue
+                    pipelines.append(
+                        {
+                            "standardName": catalog_project.get("standardName"),
+                            "definitionId": catalog_pipeline.get("definitionId"),
+                            "pipelineName": catalog_pipeline.get("name"),
+                            "definitionUrl": catalog_pipeline.get("definitionUrl"),
+                            "sourceBranch": catalog_pipeline.get("sourceBranch"),
+                            "buildProfile": catalog_pipeline.get("buildProfile"),
+                            "expectedArtifact": catalog_pipeline.get("artifactName"),
+                        }
+                    )
+            pipelines.sort(key=lambda item: str(item.get("standardName") or ""))
+            print(json.dumps({"projects": pipelines}, ensure_ascii=False, indent=2))
+            return 0
+        if not args.project_name:
+            parser.error("--project-name is required unless --list-projects is used")
         project = resolve_project(catalog, args.project_name)
         pipeline = resolve_pipeline(project, args.definition_id)
         source_branch = normalize_branch(

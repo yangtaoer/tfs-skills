@@ -20,6 +20,14 @@ Resolve a project's delivery pipeline from `../tfs-project-catalog/references/pr
 
 ## Workflow
 
+### 0. List supported projects
+
+List every cataloged delivery pipeline without contacting TFS:
+
+```powershell
+python scripts/run_tfs_pipeline.py --list-projects
+```
+
 ### 1. Resolve and check the pipeline
 
 Use the standard name or an exact alias from the project catalog:
@@ -71,6 +79,7 @@ Do not click **运行** when the user's request is read-only.
 ## Script Options
 
 - Omit action flags to resolve locally without contacting TFS.
+- Use `--list-projects` to list every standard project with a delivery pipeline.
 - Use `--check-definition` for a live read-only definition check.
 - Use `--confirm-run` to authorize queueing and polling.
 - Use `--build-id <id>` to resume monitoring an already queued build without queueing another.

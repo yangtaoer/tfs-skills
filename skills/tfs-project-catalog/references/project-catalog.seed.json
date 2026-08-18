@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "四川省调-成都-重庆网络发令接口清单.xlsx",
+  "source": "四川省调-成都-重庆网络发令接口清单.xlsx; dcsd-springboot-starter origin/dev pom.xml; TFS Build API",
   "defaults": {
     "areaPath": "XiNanArea-New\\四川省区团队",
     "departmentRegion": "西南地区部",
@@ -106,6 +106,24 @@
           "module": "主程序",
           "codeArea": "DCS",
           "description": "主程序所在仓库"
+        },
+        {
+          "name": "dcsd-km-srv-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-km-srv-sichuan",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuan 依赖仓库"
+        },
+        {
+          "name": "dcsd-km-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-km-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuan 依赖仓库"
         },
         {
           "name": "dcsd-springboot-starter",
@@ -318,6 +336,24 @@
           "description": "主程序所在仓库"
         },
         {
+          "name": "dcsd-km-srv-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-km-srv-sichuan",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanzy 依赖仓库"
+        },
+        {
+          "name": "dcsd-km-ui-sichuan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-km-ui-sichuan",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanzy 依赖仓库"
+        },
+        {
           "name": "dcsd-notice-srv-sichuancd-dm",
           "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuancd-dm",
           "targetBranch": "dev",
@@ -361,6 +397,1014 @@
           "module": "主程序",
           "codeArea": "DCS",
           "description": "主程序所在仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "南充网络发令",
+      "aliases": [
+        "四川南充网络发令",
+        "南充网络发令系统"
+      ],
+      "keywords": [
+        "南充",
+        "四川南充",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 1956,
+          "name": "标准版springboot-四川南充",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=1956",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuannc",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-direct-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-srv-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuannc",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuannc",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuannc",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuannc 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "宜宾网络发令",
+      "aliases": [
+        "四川宜宾网络发令",
+        "宜宾网络发令系统"
+      ],
+      "keywords": [
+        "宜宾",
+        "四川宜宾",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 5489,
+          "name": "标准版springboot-四川宜宾",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=5489",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanyb",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanyb 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "巴中网络发令",
+      "aliases": [
+        "四川巴中网络发令",
+        "巴中网络发令系统"
+      ],
+      "keywords": [
+        "巴中",
+        "四川巴中",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 7100,
+          "name": "标准版springboot-四川巴中",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=7100",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanbz",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuanbz",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuanbz",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuanbz",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuanbz",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanbz 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "泸州网络发令",
+      "aliases": [
+        "四川泸州网络发令",
+        "泸州网络发令系统"
+      ],
+      "keywords": [
+        "泸州",
+        "四川泸州",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 7096,
+          "name": "标准版springboot-四川泸州",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=7096",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanlz",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuanlz-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuanlz-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuanlz-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuanlz-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanlz 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "阿坝网络发令",
+      "aliases": [
+        "四川阿坝网络发令",
+        "阿坝网络发令系统"
+      ],
+      "keywords": [
+        "阿坝",
+        "四川阿坝",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 7065,
+          "name": "标准版springboot-四川阿坝",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=7065",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanab",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuanab",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuanab",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuanab",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuanab",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanab 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "遂宁网络发令",
+      "aliases": [
+        "四川遂宁网络发令",
+        "遂宁网络发令系统"
+      ],
+      "keywords": [
+        "遂宁",
+        "四川遂宁",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 7945,
+          "name": "标准版springboot-四川遂宁",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=7945",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuansn",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuansn-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuansn-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuansn-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuansn-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuansn 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "广安网络发令",
+      "aliases": [
+        "四川广安网络发令",
+        "广安网络发令系统"
+      ],
+      "keywords": [
+        "广安",
+        "四川广安",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 5481,
+          "name": "标准版springboot-四川广安",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=5481",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanga",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuandd",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuanga",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuanga",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuanga",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuanga",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuanga",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuanga",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanga 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "乐山网络发令",
+      "aliases": [
+        "四川乐山网络发令",
+        "乐山网络发令系统"
+      ],
+      "keywords": [
+        "乐山",
+        "四川乐山",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 6495,
+          "name": "标准版springboot-四川乐山",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=6495",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuanls",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuanls",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuanls",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuanls",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuanls",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuanls",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuanls",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuandd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuandd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuanls",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuanls",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuandd",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuandd",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuanls 交付打包入口仓库"
+        }
+      ]
+    },
+    {
+      "standardName": "甘孜网络发令",
+      "aliases": [
+        "四川甘孜网络发令",
+        "甘孜网络发令系统"
+      ],
+      "keywords": [
+        "甘孜",
+        "四川甘孜",
+        "网络发令",
+        "调度"
+      ],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev",
+      "productName": "网络发令",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 9596,
+          "name": "标准版springboot-四川甘孜",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=9596",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuangz",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "dcsd-notice-srv-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-srv-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-notice-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-notice-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-direct-ui-sichuangz-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-direct-ui-sichuangz-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-homepage-ui-sichuangz-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-homepage-ui-sichuangz-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-certify-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-certify-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-report-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-report-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-permit-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-permit-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-extrawork-ui-sichuancd-dm",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-extrawork-ui-sichuancd-dm",
+          "targetBranch": "dev",
+          "role": "frontend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 依赖仓库"
+        },
+        {
+          "name": "dcsd-springboot-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_git/dcsd-springboot-starter",
+          "targetBranch": "dev",
+          "role": "backend",
+          "module": "主程序",
+          "codeArea": "DCS",
+          "description": "pom.xml profile sichuangz 交付打包入口仓库"
         }
       ]
     },

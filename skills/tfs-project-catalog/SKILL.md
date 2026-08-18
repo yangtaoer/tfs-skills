@@ -1,6 +1,6 @@
 ---
 name: tfs-project-catalog
-description: Use when a TFS requirement, user story title, project alias, repository name, Excel project list, or local repo mapping must be resolved to a standard project name, TFS Git repositories, and target/base branches.
+description: Use when a TFS requirement, user story title, project alias, repository name, Excel project list, or local repo mapping must be resolved to a standard project name, TFS Git repositories, target/base branches, and delivery pipeline definitions.
 ---
 
 # TFS Project Catalog
@@ -24,6 +24,7 @@ The catalog is the source of truth for:
 - Read `references/excel-import-notes.md` when the user provides an Excel project list.
 - Use `references/project-catalog.seed.json` as the current tracked seed catalog when resolving known network-command projects.
 - Use `scripts/resolve_tfs_workspace.py --help` for deterministic matching, local repo scanning, and workspace JSON generation.
+- For Sichuan network-command maintenance, read the latest `origin/dev:pom.xml` from `dcsd-springboot-starter` and treat each `sichuan*` Maven profile's internal Tellhow dependencies as the project repository composition.
 
 ## Catalog Rules
 
@@ -34,6 +35,8 @@ The catalog is the source of truth for:
 5. If no project can be resolved, stop and ask the user to choose a standard project. Do not invent a project.
 6. If two projects match with similar confidence, show both with aliases/repositories and ask the user to choose.
 7. Never store PATs or credentials in the catalog.
+8. For Maven-derived compositions, include dependencies whose group is owned by Tellhow only when a matching TFS Git repository can be resolved, and include `dcsd-springboot-starter` as the delivery entry repository. Exclude third-party and binary-only dependencies.
+9. Verify every delivery definition against the live TFS Build API: definition name, repository, source branch, Maven profile, and published artifact must match the catalog.
 
 ## Unknown Projects
 
