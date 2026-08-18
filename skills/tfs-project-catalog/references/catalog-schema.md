@@ -14,6 +14,20 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
       "keywords": ["省调", "网络发令", "调度"],
       "areaPath": "XiNanArea-New\\四川省区团队",
       "defaultTargetBranch": "dev",
+      "pipelines": [
+        {
+          "purpose": "delivery",
+          "definitionId": 1974,
+          "name": "标准版springboot-四川省调",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=1974",
+          "folderPath": "\\DEV-开发环境\\web主站服务",
+          "tfsProject": "DCS",
+          "repository": "dcsd-springboot-starter",
+          "sourceBranch": "refs/heads/dev",
+          "buildProfile": "sichuan",
+          "artifactName": "drop"
+        }
+      ],
       "repos": [
         {
           "name": "repo-name",
@@ -41,6 +55,16 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 | `projects[].keywords` | no | Extra matching hints for descriptions and titles. |
 | `projects[].areaPath` | no | Default TFS area path for new stories. |
 | `projects[].defaultTargetBranch` | no | Fallback for repos without explicit branch. |
+| `projects[].pipelines[].purpose` | yes | Pipeline purpose, such as `delivery`. |
+| `projects[].pipelines[].definitionId` | yes | Positive TFS Build definition ID. |
+| `projects[].pipelines[].name` | yes | Current TFS Build definition name. |
+| `projects[].pipelines[].definitionUrl` | yes | Human-facing TFS pipeline URL containing `definitionId`. |
+| `projects[].pipelines[].folderPath` | no | TFS Build folder path used for discovery and auditing. |
+| `projects[].pipelines[].tfsProject` | yes | TFS team project that owns the definition, such as `DCS`. |
+| `projects[].pipelines[].repository` | no | Primary repository used by the definition. |
+| `projects[].pipelines[].sourceBranch` | yes | Full Build API branch ref, such as `refs/heads/dev`. |
+| `projects[].pipelines[].buildProfile` | no | Build profile or variant used by the pipeline. |
+| `projects[].pipelines[].artifactName` | no | Expected published artifact, such as `drop`. |
 | `projects[].repos[].name` | yes | Human/repo name. Prefer actual TFS Git repo name. |
 | `projects[].repos[].remote` | yes | TFS Git remote URL. Used for local repo matching. |
 | `projects[].repos[].targetBranch` | no | Base branch for this repo. Defaults to project branch. |
@@ -56,6 +80,9 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 - Aliases should not equal another project's `standardName`.
 - Repository remotes may repeat when the same repo has different target branches for different modules. Treat `remote + targetBranch + module` as the unique development target.
 - Branch names must not include `origin/`; store `dev`, not `origin/dev`.
+- Pipeline `sourceBranch` values must use full refs such as `refs/heads/dev`.
+- Pipeline definition IDs must be unique within a TFS project.
+- Pipeline definition URLs must contain the matching `definitionId` query value.
 - Do not include `TFS_PAT`, passwords, or personal tokens.
 
 ## Remote Inference

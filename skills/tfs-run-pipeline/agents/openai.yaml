@@ -1,0 +1,4 @@
+interface:
+  display_name: "TFS Run Pipeline"
+  short_description: "Run TFS delivery pipelines and return artifact links"
+  default_prompt: "Use $tfs-run-pipeline to run the delivery pipeline for a resolved TFS project, wait for completion, and return its artifact link."
