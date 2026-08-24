@@ -9,22 +9,35 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
   "version": 1,
   "projects": [
     {
-      "standardName": "四川省调网络发令",
-      "aliases": ["省调网络发令", "四川省调", "四川省调网络发令系统"],
-      "keywords": ["省调", "网络发令", "调度"],
+      "standardName": "自贡检修计划智能编排系统",
+      "aliases": ["自贡检修智能编排", "自贡检修计划智能编排"],
+      "keywords": ["自贡", "检修计划", "智能编排"],
       "areaPath": "XiNanArea-New\\四川省区团队",
-      "defaultTargetBranch": "dev",
+      "defaultTargetBranch": "dev-sczg",
       "pipelines": [
         {
+          "purpose": "dependency",
+          "stage": 1,
+          "definitionId": 9479,
+          "name": "th-oms-dp-repairplan-dev-sczg-自贡",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9479",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-dp-repairplan",
+          "sourceBranch": "refs/heads/dev-sczg"
+        },
+        {
           "purpose": "delivery",
-          "definitionId": 1974,
-          "name": "标准版springboot-四川省调",
-          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_build?definitionId=1974",
-          "folderPath": "\\DEV-开发环境\\web主站服务",
-          "tfsProject": "DCS",
-          "repository": "dcsd-springboot-starter",
-          "sourceBranch": "refs/heads/dev",
-          "buildProfile": "sichuan",
+          "stage": 2,
+          "deliverable": "backend",
+          "definitionId": 9180,
+          "name": "th-oms-repairplan-layout-starter-四川自贡后端应用-测试",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9180",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-repairplan-layout-starter",
+          "sourceBranch": "refs/heads/dev-sczg",
+          "buildProfile": "sc-zg",
           "artifactName": "drop"
         }
       ],
@@ -55,7 +68,9 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 | `projects[].keywords` | no | Extra matching hints for descriptions and titles. |
 | `projects[].areaPath` | no | Default TFS area path for new stories. |
 | `projects[].defaultTargetBranch` | no | Fallback for repos without explicit branch. |
-| `projects[].pipelines[].purpose` | yes | Pipeline purpose, such as `delivery`. |
+| `projects[].pipelines[].purpose` | yes | `dependency` prepares a later stage; `delivery` must produce the requested package. |
+| `projects[].pipelines[].stage` | for workflows | Positive execution stage. Pipelines in one stage are queued together; the next stage waits for all of them to succeed. Omit for a legacy single-pipeline delivery. |
+| `projects[].pipelines[].deliverable` | no | Delivery label such as `backend` or `frontend`, used to identify final artifact links. |
 | `projects[].pipelines[].definitionId` | yes | Positive TFS Build definition ID. |
 | `projects[].pipelines[].name` | yes | Current TFS Build definition name. |
 | `projects[].pipelines[].definitionUrl` | yes | Human-facing TFS pipeline URL containing `definitionId`. |
@@ -83,6 +98,9 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 - Pipeline `sourceBranch` values must use full refs such as `refs/heads/dev`.
 - Pipeline definition IDs must be unique within a TFS project.
 - Pipeline definition URLs must contain the matching `definitionId` query value.
+- If any pipeline in a project has `stage`, every runnable pipeline in that project must have a positive stage; stages must be contiguous from `1`.
+- A staged workflow must contain at least one pipeline with `purpose: delivery`.
+- Pipelines in the same stage may run concurrently. Every pipeline in an earlier stage must succeed before the next stage is queued.
 - Do not include `TFS_PAT`, passwords, or personal tokens.
 
 ## Remote Inference

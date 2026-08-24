@@ -61,7 +61,12 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
             if alias in aliases and aliases[alias] != name:
                 errors.append(f"alias maps to multiple projects: {alias}")
             aliases[alias] = name
-        for pipeline in project.get("pipelines", []) or []:
+        project_pipelines = list(project.get("pipelines", []) or [])
+        has_staged_pipeline = any(
+            pipeline.get("stage") is not None for pipeline in project_pipelines
+        )
+        stages: set[int] = set()
+        for pipeline in project_pipelines:
             tfs_project = str(pipeline.get("tfsProject") or "").strip()
             definition_id = pipeline.get("definitionId")
             if not tfs_project:
@@ -82,6 +87,25 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
                 errors.append(
                     f"{name}/{definition_id}: definitionUrl must contain matching definitionId"
                 )
+            stage = pipeline.get("stage")
+            if has_staged_pipeline:
+                if not isinstance(stage, int) or stage <= 0:
+                    errors.append(
+                        f"{name}/{definition_id}: every staged pipeline needs a positive stage"
+                    )
+                else:
+                    stages.add(stage)
+        if has_staged_pipeline and stages:
+            expected_stages = set(range(1, max(stages) + 1))
+            if stages != expected_stages:
+                errors.append(
+                    f"{name}: pipeline stages must be contiguous from 1: {sorted(stages)}"
+                )
+            if not any(
+                pipeline.get("purpose") == "delivery"
+                for pipeline in project_pipelines
+            ):
+                errors.append(f"{name}: staged pipeline workflow has no delivery pipeline")
         for repo in project.get("repos", []) or []:
             remote = norm_remote(repo.get("remote"))
             if not repo.get("name"):
@@ -255,6 +279,8 @@ def build_workspace(args: argparse.Namespace) -> dict[str, Any]:
                 {
                     "project": project.get("standardName"),
                     "purpose": pipeline.get("purpose", ""),
+                    "stage": pipeline.get("stage"),
+                    "deliverable": pipeline.get("deliverable", ""),
                     "definitionId": pipeline.get("definitionId"),
                     "name": pipeline.get("name", ""),
                     "definitionUrl": pipeline.get("definitionUrl", ""),

@@ -1,4 +1,4 @@
 interface:
   display_name: "TFS Project Catalog"
   short_description: "Resolve TFS projects, repos, branches, and pipelines"
-  default_prompt: "Use $tfs-project-catalog to resolve the standard project name, repositories, branches, and delivery pipeline for a TFS requirement."
+  default_prompt: "Use $tfs-project-catalog to resolve the standard project name, repositories, branches, and staged delivery pipeline workflow for a TFS requirement."

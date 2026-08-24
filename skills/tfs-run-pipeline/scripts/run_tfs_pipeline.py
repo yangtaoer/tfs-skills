@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Resolve, queue, and monitor a cataloged TFS delivery pipeline."""
+"""Resolve, queue, and monitor cataloged TFS delivery pipeline workflows."""
 
 from __future__ import annotations
 
@@ -57,19 +57,32 @@ def resolve_project(catalog: dict[str, Any], value: str) -> dict[str, Any]:
     raise ValueError(f"project is not present in the catalog: {requested}")
 
 
-def resolve_pipeline(project: dict[str, Any], definition_id: int | None) -> dict[str, Any]:
+def pipeline_stage(pipeline: dict[str, Any]) -> int:
+    return int(pipeline.get("stage") or 1)
+
+
+def resolve_pipelines(
+    project: dict[str, Any], definition_id: int | None
+) -> list[dict[str, Any]]:
     pipelines = list(project.get("pipelines", []) or [])
     if definition_id is not None:
         matches = [p for p in pipelines if int(p.get("definitionId", 0)) == definition_id]
     else:
-        matches = [p for p in pipelines if p.get("purpose") == "delivery"]
-    if len(matches) == 1:
-        return matches[0]
+        staged = [p for p in pipelines if p.get("stage") is not None]
+        if staged:
+            matches = [
+                p for p in pipelines if p.get("purpose") in {"dependency", "delivery"}
+            ]
+        else:
+            matches = [p for p in pipelines if p.get("purpose") == "delivery"]
     standard_name = project.get("standardName", "<unknown>")
     if not matches:
-        raise ValueError(f"no matching delivery pipeline is cataloged for {standard_name}")
-    ids = ", ".join(str(p.get("definitionId")) for p in matches)
-    raise ValueError(f"multiple delivery pipelines are cataloged for {standard_name}: {ids}")
+        raise ValueError(f"no matching pipeline is cataloged for {standard_name}")
+    if definition_id is not None and len(matches) != 1:
+        raise ValueError(
+            f"definition {definition_id} is not unique in the catalog for {standard_name}"
+        )
+    return sorted(matches, key=lambda p: (pipeline_stage(p), int(p["definitionId"])))
 
 
 class TfsBuildClient:
@@ -150,6 +163,9 @@ def pipeline_plan(
     )
     return {
         "standardName": project.get("standardName"),
+        "purpose": pipeline.get("purpose"),
+        "stage": pipeline_stage(pipeline),
+        "deliverable": pipeline.get("deliverable"),
         "pipelineName": pipeline.get("name"),
         "definitionId": definition_id,
         "definitionUrl": definition_url,
@@ -206,7 +222,11 @@ def live_check(
         if (step.get("inputs") or {}).get("ArtifactName")
     ]
     expected_artifact = str(plan.get("expectedArtifact") or "")
-    if expected_artifact and expected_artifact not in published_artifacts:
+    if (
+        expected_artifact
+        and published_artifacts
+        and expected_artifact not in published_artifacts
+    ):
         raise RuntimeError(
             f"catalog artifact {expected_artifact!r} is not published by the live definition"
         )
@@ -225,6 +245,11 @@ def live_check(
         "liveDefaultBranch": (definition.get("repository") or {}).get("defaultBranch"),
         "liveMavenGoals": maven_goals,
         "livePublishedArtifacts": published_artifacts,
+        "artifactPrecheck": (
+            "verified"
+            if not expected_artifact or expected_artifact in published_artifacts
+            else "deferred-to-build-result"
+        ),
         "activeBuildIds": [build.get("id") for build in active],
     }
     return check, active_build
@@ -263,6 +288,69 @@ def wait_for_build(
         time.sleep(poll_seconds)
 
 
+def workflow_payload(plans: list[dict[str, Any]]) -> dict[str, Any]:
+    stages: list[dict[str, Any]] = []
+    for stage_number in sorted({int(plan["stage"]) for plan in plans}):
+        stages.append(
+            {
+                "stage": stage_number,
+                "waitForAll": True,
+                "pipelines": [
+                    plan for plan in plans if int(plan["stage"]) == stage_number
+                ],
+            }
+        )
+    return {"stages": stages}
+
+
+def completed_build_result(
+    plan: dict[str, Any],
+    base_url: str,
+    queue_action: str,
+    completed: dict[str, Any],
+    artifacts: list[dict[str, Any]],
+) -> dict[str, Any]:
+    build_id = int(completed["id"])
+    artifact_names = [str(artifact.get("name")) for artifact in artifacts]
+    expected = str(plan.get("expectedArtifact") or "")
+    expected_found = not expected or expected in artifact_names
+    artifact_required = plan.get("purpose") == "delivery"
+    artifact_valid = expected_found and (bool(artifacts) or not artifact_required)
+    return {
+        "action": queue_action,
+        **plan,
+        "buildId": build_id,
+        "buildNumber": completed.get("buildNumber"),
+        "status": completed.get("status"),
+        "result": completed.get("result"),
+        **build_links(base_url, str(plan["tfsProject"]), build_id),
+        "artifacts": artifact_names,
+        "expectedArtifactFound": expected_found,
+        "artifactValid": artifact_valid,
+    }
+
+
+def build_result_exit_code(result: dict[str, Any]) -> int:
+    if result.get("result") != "succeeded":
+        return 3
+    if not result.get("artifactValid"):
+        return 4
+    return 0
+
+
+def queue_or_reuse_build(
+    client: TfsBuildClient,
+    plan: dict[str, Any],
+    active_build: dict[str, Any] | None,
+) -> tuple[dict[str, Any], str]:
+    if active_build is not None:
+        print(f"using active build {active_build.get('id')}", file=sys.stderr, flush=True)
+        return active_build, "wait-existing"
+    build = client.queue_build(int(plan["definitionId"]), str(plan["sourceBranch"]))
+    print(f"queued build {build.get('id')}", file=sys.stderr, flush=True)
+    return build, "queued"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-name", help="Standard project name or exact alias")
@@ -270,14 +358,22 @@ def main() -> int:
     parser.add_argument(
         "--list-projects",
         action="store_true",
-        help="List cataloged delivery pipelines without contacting TFS",
+        help="List cataloged pipeline workflows without contacting TFS",
     )
     parser.add_argument("--definition-id", type=int, help="Select one cataloged definition explicitly")
     parser.add_argument("--base-url", default=os.environ.get("TFS_BASE_URL", DEFAULT_BASE_URL))
-    parser.add_argument("--source-branch", default="", help="Optional branch override")
+    parser.add_argument(
+        "--source-branch",
+        default="",
+        help="Optional branch override for a single selected definition",
+    )
     action = parser.add_mutually_exclusive_group()
-    action.add_argument("--check-definition", action="store_true", help="Read-only live validation")
-    action.add_argument("--confirm-run", action="store_true", help="Authorize one build run")
+    action.add_argument(
+        "--check-definition", action="store_true", help="Read-only live workflow validation"
+    )
+    action.add_argument(
+        "--confirm-run", action="store_true", help="Authorize one complete workflow run"
+    )
     action.add_argument("--build-id", type=int, help="Monitor an already queued build")
     parser.add_argument("--force-new", action="store_true", help="Queue even when an active build exists")
     parser.add_argument("--poll-seconds", type=int, default=10)
@@ -299,14 +395,20 @@ def main() -> int:
                 )
             ):
                 raise ValueError("--list-projects cannot be combined with run options")
-            pipelines = []
+            pipelines: list[dict[str, Any]] = []
             for catalog_project in catalog.get("projects", []) or []:
-                for catalog_pipeline in catalog_project.get("pipelines", []) or []:
-                    if catalog_pipeline.get("purpose") != "delivery":
+                catalog_pipelines = list(catalog_project.get("pipelines", []) or [])
+                has_stages = any(p.get("stage") is not None for p in catalog_pipelines)
+                for catalog_pipeline in catalog_pipelines:
+                    purpose = catalog_pipeline.get("purpose")
+                    if purpose != "delivery" and not (has_stages and purpose == "dependency"):
                         continue
                     pipelines.append(
                         {
                             "standardName": catalog_project.get("standardName"),
+                            "purpose": purpose,
+                            "stage": pipeline_stage(catalog_pipeline),
+                            "deliverable": catalog_pipeline.get("deliverable"),
                             "definitionId": catalog_pipeline.get("definitionId"),
                             "pipelineName": catalog_pipeline.get("name"),
                             "definitionUrl": catalog_pipeline.get("definitionUrl"),
@@ -315,42 +417,95 @@ def main() -> int:
                             "expectedArtifact": catalog_pipeline.get("artifactName"),
                         }
                     )
-            pipelines.sort(key=lambda item: str(item.get("standardName") or ""))
+            pipelines.sort(
+                key=lambda item: (
+                    str(item.get("standardName") or ""),
+                    int(item.get("stage") or 1),
+                    int(item.get("definitionId") or 0),
+                )
+            )
             print(json.dumps({"projects": pipelines}, ensure_ascii=False, indent=2))
             return 0
         if not args.project_name:
             parser.error("--project-name is required unless --list-projects is used")
         project = resolve_project(catalog, args.project_name)
-        pipeline = resolve_pipeline(project, args.definition_id)
-        source_branch = normalize_branch(
-            args.source_branch or str(pipeline.get("sourceBranch") or "")
-        )
-        if not source_branch:
-            raise ValueError("the pipeline has no source branch")
-        plan = pipeline_plan(project, pipeline, args.base_url, source_branch)
+        workflow_pipelines = resolve_pipelines(project, None)
+        selected_pipelines = resolve_pipelines(project, args.definition_id)
+        if args.confirm_run and args.definition_id is not None and len(workflow_pipelines) > 1:
+            raise ValueError(
+                "--confirm-run executes the complete staged workflow; "
+                "do not combine it with --definition-id"
+            )
+        if args.build_id and len(selected_pipelines) != 1:
+            raise ValueError(
+                "--build-id requires --definition-id when the project has multiple pipelines"
+            )
+        if args.source_branch and len(selected_pipelines) != 1:
+            raise ValueError(
+                "--source-branch requires --definition-id when the project has multiple pipelines"
+            )
+
+        plans: list[dict[str, Any]] = []
+        for pipeline in selected_pipelines:
+            source_branch = normalize_branch(
+                args.source_branch or str(pipeline.get("sourceBranch") or "")
+            )
+            if not source_branch:
+                raise ValueError(
+                    f"pipeline {pipeline.get('definitionId')} has no source branch"
+                )
+            plans.append(
+                pipeline_plan(project, pipeline, args.base_url, source_branch)
+            )
 
         if args.force_new and not args.confirm_run:
             raise ValueError("--force-new requires --confirm-run")
         if not args.check_definition and not args.confirm_run and not args.build_id:
-            print(json.dumps({"action": "plan", **plan}, ensure_ascii=False, indent=2))
+            if len(plans) == 1:
+                payload = {"action": "plan", **plans[0]}
+            else:
+                payload = {
+                    "action": "plan",
+                    "standardName": project.get("standardName"),
+                    "workflow": workflow_payload(plans),
+                }
+            print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
 
         pat = os.environ.get("TFS_PAT", "")
         if not pat:
             raise RuntimeError("TFS_PAT is required for live pipeline operations")
-        client = TfsBuildClient(args.base_url, str(plan["tfsProject"]), pat)
-        check, active_build = live_check(client, plan, args.force_new)
-        if args.check_definition:
-            print(
-                json.dumps(
-                    {"action": "check", **plan, "live": check},
-                    ensure_ascii=False,
-                    indent=2,
-                )
+        clients: dict[str, TfsBuildClient] = {}
+        checks: dict[int, dict[str, Any]] = {}
+        active_builds: dict[int, dict[str, Any] | None] = {}
+        for plan in plans:
+            tfs_project = str(plan["tfsProject"])
+            client = clients.setdefault(
+                tfs_project, TfsBuildClient(args.base_url, tfs_project, pat)
             )
+            check, active_build = live_check(client, plan, args.force_new)
+            definition_id = int(plan["definitionId"])
+            checks[definition_id] = check
+            active_builds[definition_id] = active_build
+
+        if args.check_definition:
+            checked_plans = [
+                {**plan, "live": checks[int(plan["definitionId"])]} for plan in plans
+            ]
+            if len(checked_plans) == 1:
+                payload = {"action": "check", **checked_plans[0]}
+            else:
+                payload = {
+                    "action": "check",
+                    "standardName": project.get("standardName"),
+                    "workflow": workflow_payload(checked_plans),
+                }
+            print(json.dumps(payload, ensure_ascii=False, indent=2))
             return 0
 
         if args.build_id:
+            plan = plans[0]
+            client = clients[str(plan["tfsProject"])]
             build = client.get_build(args.build_id)
             live_definition_id = int((build.get("definition") or {}).get("id") or 0)
             if live_definition_id != int(plan["definitionId"]):
@@ -360,38 +515,76 @@ def main() -> int:
                 )
             queue_action = "monitor-existing"
             print(f"monitoring build {build.get('id')}", file=sys.stderr, flush=True)
-        elif active_build is not None:
-            build = active_build
-            queue_action = "wait-existing"
-            print(f"using active build {build.get('id')}", file=sys.stderr, flush=True)
-        else:
-            build = client.queue_build(int(plan["definitionId"]), source_branch)
-            queue_action = "queued"
-            print(f"queued build {build.get('id')}", file=sys.stderr, flush=True)
+            build_id = int(build["id"])
+            completed = wait_for_build(
+                client, build_id, args.poll_seconds, args.timeout_seconds
+            )
+            artifacts = client.get_artifacts(build_id)
+            result = completed_build_result(
+                plan, args.base_url, queue_action, completed, artifacts
+            )
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return build_result_exit_code(result)
 
-        build_id = int(build["id"])
-        completed = wait_for_build(client, build_id, args.poll_seconds, args.timeout_seconds)
-        artifacts = client.get_artifacts(build_id)
-        artifact_names = [str(artifact.get("name")) for artifact in artifacts]
-        links = build_links(args.base_url, str(plan["tfsProject"]), build_id)
-        expected = str(plan.get("expectedArtifact") or "")
-        expected_found = not expected or expected in artifact_names
-        result = {
-            "action": queue_action,
-            **plan,
-            "buildId": build_id,
-            "buildNumber": completed.get("buildNumber"),
-            "status": completed.get("status"),
-            "result": completed.get("result"),
-            **links,
-            "artifacts": artifact_names,
-            "expectedArtifactFound": expected_found,
+        stage_outputs: list[dict[str, Any]] = []
+        for stage_number in sorted({int(plan["stage"]) for plan in plans}):
+            stage_plans = [plan for plan in plans if int(plan["stage"]) == stage_number]
+            queued: list[
+                tuple[dict[str, Any], TfsBuildClient, dict[str, Any], str]
+            ] = []
+            for plan in stage_plans:
+                definition_id = int(plan["definitionId"])
+                client = clients[str(plan["tfsProject"])]
+                build, queue_action = queue_or_reuse_build(
+                    client, plan, active_builds[definition_id]
+                )
+                queued.append((plan, client, build, queue_action))
+
+            stage_results: list[dict[str, Any]] = []
+            for plan, client, build, queue_action in queued:
+                build_id = int(build["id"])
+                completed = wait_for_build(
+                    client, build_id, args.poll_seconds, args.timeout_seconds
+                )
+                artifacts = client.get_artifacts(build_id)
+                stage_results.append(
+                    completed_build_result(
+                        plan, args.base_url, queue_action, completed, artifacts
+                    )
+                )
+            stage_outputs.append({"stage": stage_number, "builds": stage_results})
+
+            exit_codes = [build_result_exit_code(result) for result in stage_results]
+            if any(code != 0 for code in exit_codes):
+                payload = {
+                    "action": "workflow-run",
+                    "standardName": project.get("standardName"),
+                    "result": "failed",
+                    "stages": stage_outputs,
+                    "deliveries": [
+                        result
+                        for stage in stage_outputs
+                        for result in stage["builds"]
+                        if result.get("purpose") == "delivery"
+                    ],
+                }
+                print(json.dumps(payload, ensure_ascii=False, indent=2))
+                return 3 if 3 in exit_codes else 4
+
+        deliveries = [
+            result
+            for stage in stage_outputs
+            for result in stage["builds"]
+            if result.get("purpose") == "delivery"
+        ]
+        payload = {
+            "action": "workflow-run",
+            "standardName": project.get("standardName"),
+            "result": "succeeded",
+            "stages": stage_outputs,
+            "deliveries": deliveries,
         }
-        print(json.dumps(result, ensure_ascii=False, indent=2))
-        if completed.get("result") != "succeeded":
-            return 3
-        if not artifacts or not expected_found:
-            return 4
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
         return 0
     except (ValueError, RuntimeError, TimeoutError, KeyError, OSError) as error:
         print(f"ERROR: {error}", file=sys.stderr)

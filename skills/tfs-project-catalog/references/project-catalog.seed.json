@@ -1553,6 +1553,107 @@
           "description": "主要开发巴中自巡航的附属功能，例如考试系统、网盘、绩效考核、定值单等"
         }
       ]
+    },
+    {
+      "standardName": "自贡检修计划智能编排系统",
+      "aliases": [
+        "自贡检修智能编排",
+        "自贡检修计划智能编排",
+        "四川自贡检修计划智能编排系统"
+      ],
+      "keywords": ["自贡", "检修计划", "智能编排", "发包", "DCOMS"],
+      "areaPath": "XiNanArea-New\\四川省区团队",
+      "defaultTargetBranch": "dev-sczg",
+      "productName": "检修计划智能编排系统",
+      "pipelines": [
+        {
+          "purpose": "dependency",
+          "stage": 1,
+          "definitionId": 9479,
+          "name": "th-oms-dp-repairplan-dev-sczg-自贡",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9479",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-dp-repairplan",
+          "sourceBranch": "refs/heads/dev-sczg"
+        },
+        {
+          "purpose": "dependency",
+          "stage": 1,
+          "definitionId": 9480,
+          "name": "th-oms-repairplan-system-vue-四川自贡前端依赖",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9480",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-repairplan-system-vue",
+          "sourceBranch": "refs/heads/dev-sczg"
+        },
+        {
+          "purpose": "delivery",
+          "stage": 2,
+          "deliverable": "backend",
+          "definitionId": 9180,
+          "name": "th-oms-repairplan-layout-starter-四川自贡后端应用-测试",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9180",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-repairplan-layout-starter",
+          "sourceBranch": "refs/heads/dev-sczg",
+          "buildProfile": "sc-zg",
+          "artifactName": "drop"
+        },
+        {
+          "purpose": "delivery",
+          "stage": 2,
+          "deliverable": "frontend",
+          "definitionId": 9181,
+          "name": "th-oms-repairplan-starter-vue-四川自贡检修计划前端-测试",
+          "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_build?definitionId=9181",
+          "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
+          "tfsProject": "DCOMS",
+          "repository": "th-oms-repairplan-starter-vue",
+          "sourceBranch": "refs/heads/dev-sczg",
+          "artifactName": "drop"
+        }
+      ],
+      "repos": [
+        {
+          "name": "th-oms-dp-repairplan",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_git/th-oms-dp-repairplan",
+          "targetBranch": "dev-sczg",
+          "role": "dependency",
+          "module": "后端依赖",
+          "codeArea": "DCOMS",
+          "description": "自贡检修计划后端依赖"
+        },
+        {
+          "name": "th-oms-repairplan-system-vue",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_git/th-oms-repairplan-system-vue",
+          "targetBranch": "dev-sczg",
+          "role": "dependency",
+          "module": "前端依赖",
+          "codeArea": "DCOMS",
+          "description": "自贡检修计划前端 npm 依赖"
+        },
+        {
+          "name": "th-oms-repairplan-layout-starter",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_git/th-oms-repairplan-layout-starter",
+          "targetBranch": "dev-sczg",
+          "role": "backend",
+          "module": "后端应用",
+          "codeArea": "DCOMS",
+          "description": "自贡检修计划后端交付应用"
+        },
+        {
+          "name": "th-oms-repairplan-starter-vue",
+          "remote": "http://dev.tellhowsoft.com/DefaultCollection/DCOMS/_git/th-oms-repairplan-starter-vue",
+          "targetBranch": "dev-sczg",
+          "role": "frontend",
+          "module": "前端应用",
+          "codeArea": "DCOMS",
+          "description": "自贡检修计划前端交付应用"
+        }
+      ]
     }
   ]
 }
