@@ -41,6 +41,8 @@ That query is expected to return reviewed requirements. The requirement state to
 ## Required Behavior
 
 - Apply the shared-code protection principle before selecting repositories or exploring implementation paths.
+- Only production-required files may be submitted. Documentation and tests remain local unless explicitly requested, and SQL remains local unless the user confirms the exact SQL files for submission.
+- Before delegating submission to `tfs-git-pr`, classify every changed path and provide an exact production-file allowlist. Never treat “提交全部修改” as permission to include documentation, tests, SQL, or other non-production files.
 - Always use the saved query or an explicit work item id to select the requirement.
 - If a requirement workspace JSON exists, use its confirmed repository paths and target branches instead of asking again.
 - If no workspace exists, ask the user for local repository path(s). Many features span multiple repos and one startup repo, so do not rely on static module-to-repo mapping unless `tfs-requirement-workspace` has produced a confirmed workspace.
@@ -89,9 +91,12 @@ That query is expected to return reviewed requirements. The requirement state to
    - Make the required code changes in the provided repo(s).
    - Follow the repo's local coding style and existing patterns.
    - Do not run checks unless the user asks or the repo clearly requires a very cheap validation.
+   - Do not delete locally useful documentation, tests, SQL, reports, or scratch files merely because they are excluded from submission.
 
 7. **Submit PR**
-   - Use `tfs-git-pr` to stage intended files, commit, push, create PR to the confirmed target branch, set auto-complete, delete source branch on completion, and link the work item.
+   - Use `tfs-git-pr` to apply its Production Commit Scope Gate, stage only the exact approved production allowlist, commit, push, create PR to the confirmed target branch, set auto-complete, delete source branch on completion, and link the work item.
+   - For each SQL file, obtain explicit user confirmation before staging. If confirmation is absent, omit it; if the feature cannot work correctly without it, stop before commit.
+   - Include documentation or test files only when the user explicitly requests that category or exact path.
    - After each PR is created, use the `tfs-git-pr` main-workspace handoff procedure to remove the clean temporary worktree and switch the corresponding clean repository in the user's IDEA/main workspace to the PR source branch.
    - Complete the handoff immediately; do not wait for PR merge. For multi-repository work, verify every involved repository is on the same intended feature branch before reporting readiness for local testing.
    - Commit/PR title format:
@@ -108,6 +113,7 @@ That query is expected to return reviewed requirements. The requirement state to
    - Report requirement id/title.
    - Report repo path(s), branch(es), commit title(s), PR URL(s), and auto-complete/source deletion status.
    - Explain that checks were not run by default and the user should self-test.
+   - List documentation, tests, SQL, and other non-production changes that were intentionally left local and unsubmitted.
    - Report which temporary worktrees were removed and the branch now selected in each main-workspace repository. If handoff was skipped, report the dirty or ambiguous path that blocked it.
 
 ## References

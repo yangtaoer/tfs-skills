@@ -41,6 +41,11 @@ feature/1551572-yangtao
 ## PR and Completion
 
 - Use `tfs-git-pr` for commit and PR creation.
+- Before submission, classify every changed path and pass only exact production-required paths to `tfs-git-pr`.
+- Exclude documentation, tests, test support, reports, local tooling metadata, temporary files, caches, and generated output by default. Documentation and tests require an explicit user exception.
+- SQL scripts require explicit confirmation for the exact paths. Without it they remain local; if they are required for a correct production change, do not submit an incomplete PR.
+- Never use broad staging commands such as `git add .` or `git add -A`.
+- Preserve excluded working-tree files and report them; do not delete them as cleanup.
 - PR target is the confirmed target branch.
 - PR title equals commit subject.
 - Enable auto-complete.

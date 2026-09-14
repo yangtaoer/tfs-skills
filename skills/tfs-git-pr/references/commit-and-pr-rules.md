@@ -1,5 +1,16 @@
 # Commit and PR Rules
 
+## Production Commit Scope Gate
+
+- Only commit files required by the production application, runtime configuration, build, or deployment.
+- Default-exclude documentation (`docs/`, `doc/`, `README*`, `CHANGELOG*`, `*.md`, `*.adoc`, `*.rst`) and tests/test support (`src/test/`, `test/`, `tests/`, `__tests__/`, fixtures, mocks, snapshots, coverage, `*Test.*`, `*Tests.*`, `*.test.*`, `*.spec.*`). Include these only after an explicit user instruction covering the category or exact path.
+- Default-exclude local/editor/agent metadata, logs, screenshots, reports, scratch/temporary files, caches, and generated build output unless a specific file is required in the production source tree.
+- SQL is never implicitly included. List each `*.sql` path and obtain explicit confirmation before staging it. Without confirmation, leave it local. If production correctness depends on it, stop before commit and request confirmation.
+- A generic instruction to submit all changes does not approve documentation, tests, or SQL.
+- Never use `git add .`, `git add -A`, or broad staging globs. Stage the reviewed production allowlist by exact path and inspect the complete staged diff before commit.
+- Unstage prohibited or unconfirmed paths without deleting their working-tree content. Report all excluded paths after submission.
+- If the allowlist is empty, do not create a commit or PR.
+
 ## Shared Code Gate
 
 - Treat code used by multiple regions or provinces as protected shared code.
@@ -59,8 +70,8 @@ The URL above is an example. Some saved queries are `oneHop` WorkItemLinks queri
 - `fix`: bug fix or production defect correction.
 - `perf`: performance improvement without behavior change.
 - `refactor`: internal restructuring without behavior change.
-- `docs`: documentation only.
-- `test`: test-only changes.
+- `docs`: documentation explicitly approved for submission.
+- `test`: test-only changes explicitly approved for submission.
 - `chore`: maintenance, configuration, dependency, or tooling work.
 - `build`: build system changes.
 - `ci`: CI/CD pipeline changes.

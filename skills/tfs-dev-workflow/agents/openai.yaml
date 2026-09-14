@@ -1,4 +1,4 @@
 interface:
   display_name: "TFS Dev Workflow"
   short_description: "Pull TFS stories, develop locally, and submit PRs"
-  default_prompt: "Use $tfs-dev-workflow to implement a reviewed TFS story, submit PRs, and prepare my main IDE workspace on the feature branches for local testing."
+  default_prompt: "Use $tfs-dev-workflow to implement a reviewed TFS story, submit only approved production files with SQL confirmation, and prepare my main IDE workspace on the feature branches for local testing."

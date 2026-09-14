@@ -13,6 +13,10 @@ The workflow protects the base branch, standardizes commit messages, and makes T
 ## Core Rules
 
 - Before staging or publishing, classify each changed repository and path as project-specific or shared. Do not commit, push, or create a PR for unconfirmed shared-code changes made for a regional requirement. If the scope is uncertain, stop and ask the user to confirm the exact shared repository and accepted impact.
+- Commit only files required by the production application, its runtime configuration, or its build/deployment. Keep every non-production file out of the commit and PR.
+- Documentation and test files are excluded by default. Include them only when the user explicitly requests that category or names the exact files; a generic request such as “提交全部修改” is not an exception.
+- Treat every SQL script as confirmation-required. Show the exact SQL paths and ask whether to include them; without explicit confirmation, do not stage them. If omitting SQL would make the production change incomplete, stop before committing instead of publishing an incomplete PR.
+- Stage production files by exact path. Never use `git add .`, `git add -A`, repository-wide globs, or any equivalent broad staging command.
 - Treat configured TFS remotes as Azure DevOps Server repositories. Default host is `dev.tellhowsoft.com`; override with `TFS_REPO_HOST` when needed.
 - Never commit directly on the target/base branch or push directly to it.
 - Confirm the target/base branch on first use. Use `TFS_TARGET_BRANCH` if set; otherwise use `dev` only as a fallback.
@@ -30,11 +34,26 @@ The workflow protects the base branch, standardizes commit messages, and makes T
   - `fix` for bug fixes.
   - `perf` for performance-only changes.
   - `refactor` for behavior-preserving restructuring.
-  - `docs`, `test`, `chore`, `build`, or `ci` when they fit better.
+  - `docs` or `test` only for files the user explicitly requested to submit; `chore`, `build`, or `ci` when they represent production-required maintenance or delivery changes.
 - Use a specific area prefix before the summary, for example `成都-配网拟票自动联想功能优化`.
 - After every successful PR submission, prepare the user's main IDE workspace for immediate local testing; do not wait for the PR to merge.
 - Remove a temporary feature worktree and switch the corresponding clean main repository to the PR source branch only after verifying that the temporary worktree is clean and its HEAD is pushed to `origin/<sourceBranch>`.
 - If the main repository is dirty, the temporary worktree has unpushed changes, or the main workspace is ambiguous, do not remove or switch anything. Report the exact blocker to the user.
+
+## Production Commit Scope Gate
+
+Apply this gate immediately before every commit:
+
+1. Inspect both unstaged and staged paths with `git status --short`, `git diff --name-status`, and `git diff --cached --name-status`.
+2. Build an explicit allowlist containing only production application code, required runtime configuration, and required build/deployment definitions.
+3. Exclude documentation such as `docs/`, `doc/`, `README*`, `CHANGELOG*`, `*.md`, `*.adoc`, and `*.rst` unless explicitly requested.
+4. Exclude tests and test support such as `src/test/`, `test/`, `tests/`, `__tests__/`, fixtures, mocks, snapshots, coverage output, `*Test.*`, `*Tests.*`, `*.test.*`, and `*.spec.*` unless explicitly requested.
+5. Exclude local/editor/agent metadata, logs, screenshots, scratch files, reports, temporary files, dependency caches, and generated build output unless a particular file is demonstrably required in the production source tree.
+6. Separate all `*.sql` files from the allowlist and apply the SQL confirmation rule above.
+7. Stage only allowlisted paths with `git add -- <exact-path>`. If a prohibited or unconfirmed file is already staged, unstage that exact path without deleting its working-tree contents.
+8. Re-read `git diff --cached --name-status` and `git diff --cached` before committing. If any path is not clearly production-required or explicitly approved, do not commit it.
+
+Do not delete excluded files. Leave them in the working tree and report their paths. If no eligible production file remains, do not create an empty commit or PR.
 
 Example:
 
@@ -50,7 +69,7 @@ feat(#1551572):成都-配网拟票自动联想功能优化：命令模式交互�
 4. Build the commit subject using `type(#workItemId):area-summary`. If the user gives an exact commit message, use it as-is after checking the format.
 5. Fetch `origin/<targetBranch>`.
 6. Ensure the current branch is not the target/base branch. If needed, create a feature branch from `origin/<targetBranch>` before committing.
-7. Stage only the intended files. Do not stage unrelated local changes.
+7. Apply the Production Commit Scope Gate and stage only exact, approved production paths. Do not stage unrelated, documentation, test, non-production, or unconfirmed SQL files.
 8. Commit with the standardized subject.
 9. Push the source branch to origin.
 10. Create a PR from the source branch to the confirmed target branch with the commit subject as the title.
@@ -63,7 +82,7 @@ feat(#1551572):成都-配网拟票自动联想功能优化：命令模式交互�
     - Switch the main repository to the source branch, creating a local tracking branch if needed.
     - Verify the selected branch, upstream, and clean status.
     - Do not wait for PR merge. If the source branch was already deleted after merge, update and use the confirmed target branch instead.
-14. Report the PR id, source branch, target branch, title, auto-complete/source deletion status, web URL, and main-workspace handoff result.
+14. Report the PR id, source branch, target branch, title, auto-complete/source deletion status, web URL, main-workspace handoff result, and every changed file deliberately left local by the Production Commit Scope Gate.
 
 ## Branch Commands
 
