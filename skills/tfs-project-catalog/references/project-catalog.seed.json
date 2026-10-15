@@ -31,7 +31,79 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuan",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 53,
+                "name": "标准版springboot开发-四川",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=53&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川"
+                ],
+                "automaticTrigger": true,
+                "triggerConditions": [
+                  []
+                ],
+                "environments": [
+                  {
+                    "environmentId": 62,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/scczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/scczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 8581,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:8581/netorder",
+                        "configPath": "/home/devczp/scczp/application-sichuan.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          8581,
+                          21687
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -181,7 +253,76 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuancd",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 62,
+                "name": "标准版springboot开发-四川成都",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=62&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川成都"
+                ],
+                "automaticTrigger": false,
+                "triggerConditions": [],
+                "environments": [
+                  {
+                    "environmentId": 71,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/sccdczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/sccdczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 8608,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:8608/netorder",
+                        "configPath": "/home/devczp/sccdczp/application-sichuancd.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          8608
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -295,7 +436,78 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanzy",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 527,
+                "name": "标准版springboot开发-四川资阳",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=527&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川资阳"
+                ],
+                "automaticTrigger": true,
+                "triggerConditions": [
+                  []
+                ],
+                "environments": [
+                  {
+                    "environmentId": 667,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/sczyczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/sczyczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 58389,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:58389/netorder",
+                        "configPath": "/home/devczp/sczyczp/application-sichuanzy.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          58389
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -426,7 +638,76 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuannc",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 61,
+                "name": "标准版springboot开发-四川南充",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=61&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川南充"
+                ],
+                "automaticTrigger": false,
+                "triggerConditions": [],
+                "environments": [
+                  {
+                    "environmentId": 70,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/scncczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/scncczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 8600,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:8600/netorder",
+                        "configPath": "/home/devczp/scncczp/application-sichuannc.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          8600
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -530,7 +811,76 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanyb",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 232,
+                "name": "标准版springboot开发-四川地调",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=232&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川宜宾"
+                ],
+                "automaticTrigger": true,
+                "triggerConditions": [
+                  []
+                ],
+                "environments": [
+                  {
+                    "environmentId": 298,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/scybczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/scybczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 8609,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:8609/netorder",
+                        "configPath": "/home/devczp/scybczp/application-sichuanyb.properties",
+                        "portVerification": "configuration-only-not-listening",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -643,7 +993,78 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanbz",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 450,
+                "name": "标准版springboot开发-四川巴中",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=450&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川巴中"
+                ],
+                "automaticTrigger": true,
+                "triggerConditions": [
+                  []
+                ],
+                "environments": [
+                  {
+                    "environmentId": 590,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/scbzczp"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/scbzczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 18080,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:18080/netorder",
+                        "configPath": "/home/devczp/scbzczp/application-sichuanbz.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          18080
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -756,7 +1177,76 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanlz",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 367,
+                "name": "标准版springboot开发-四川泸州",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=367&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川泸州"
+                ],
+                "automaticTrigger": false,
+                "triggerConditions": [],
+                "environments": [
+                  {
+                    "environmentId": 503,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/sclzczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/sclzczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 28608,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:28608/netorder",
+                        "configPath": "/home/devczp/sclzczp/application-sichuanlz.properties",
+                        "portVerification": "runtime-listener-verified",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [
+                          28608
+                        ],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -869,7 +1359,13 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanab",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         }
       ],
       "repos": [
@@ -982,7 +1478,13 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuansn",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         }
       ],
       "repos": [
@@ -1095,7 +1597,13 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanga",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         }
       ],
       "repos": [
@@ -1208,7 +1716,74 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuanls",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "linked-releases-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": [
+              {
+                "releaseDefinitionId": 331,
+                "name": "标准版springboot开发-四川乐山",
+                "definitionUrl": "http://dev.tellhowsoft.com/DefaultCollection/DCS/_release?definitionId=331&view=mine&_a=releases",
+                "artifactAliases": [
+                  "_标准版springboot-四川乐山"
+                ],
+                "automaticTrigger": false,
+                "triggerConditions": [],
+                "environments": [
+                  {
+                    "environmentId": 464,
+                    "name": "阶段 2",
+                    "conditions": [
+                      {
+                        "name": "ReleaseStarted",
+                        "conditionType": "event",
+                        "value": ""
+                      }
+                    ],
+                    "automaticApproval": true,
+                    "schedules": [],
+                    "targets": [
+                      {
+                        "endpointId": "39e8d4ec-e0db-4f0d-a894-d0cd28ddb1c7",
+                        "endpointName": "192.168.62.39",
+                        "host": "192.168.62.39",
+                        "hostEvidence": "service-connection-name",
+                        "sshPort": 22,
+                        "directories": [
+                          "/home/devczp/sclsczp/"
+                        ],
+                        "serviceScripts": [
+                          "/home/devczp/sclsczp/service.sh"
+                        ],
+                        "steps": [
+                          "停服务",
+                          "删除旧部署包",
+                          "上传新程序包",
+                          "启动服务"
+                        ],
+                        "httpPort": 8591,
+                        "contextPath": "/netorder",
+                        "applicationUrl": "http://192.168.62.39:8591/netorder",
+                        "configPath": "/home/devczp/sclsczp/application-sichuanls.properties",
+                        "portVerification": "configuration-only-not-listening",
+                        "sshVerifiedAt": "2026-10-15T03:05:31+00:00",
+                        "observedListeningPorts": [],
+                        "serviceTiming": {
+                          "startProcessCheckDelaySeconds": 12,
+                          "stopGracePeriodSeconds": 5,
+                          "restartPauseSeconds": 1,
+                          "readinessHealthCheck": false
+                        }
+                      }
+                    ],
+                    "unexpandedTaskGroupIds": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ],
       "repos": [
@@ -1321,7 +1896,13 @@
           "repository": "dcsd-springboot-starter",
           "sourceBranch": "refs/heads/dev",
           "buildProfile": "sichuangz",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         }
       ],
       "repos": [
@@ -1575,7 +2156,13 @@
           "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
           "tfsProject": "DCOMS",
           "repository": "th-oms-dp-repairplan",
-          "sourceBranch": "refs/heads/dev-sczg"
+          "sourceBranch": "refs/heads/dev-sczg",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         },
         {
           "purpose": "dependency",
@@ -1586,7 +2173,13 @@
           "folderPath": "\\RELEASE\\四川\\检修计划智能编排系统",
           "tfsProject": "DCOMS",
           "repository": "th-oms-repairplan-system-vue",
-          "sourceBranch": "refs/heads/dev-sczg"
+          "sourceBranch": "refs/heads/dev-sczg",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         },
         {
           "purpose": "delivery",
@@ -1600,7 +2193,13 @@
           "repository": "th-oms-repairplan-layout-starter",
           "sourceBranch": "refs/heads/dev-sczg",
           "buildProfile": "sc-zg",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         },
         {
           "purpose": "delivery",
@@ -1613,7 +2212,13 @@
           "tfsProject": "DCOMS",
           "repository": "th-oms-repairplan-starter-vue",
           "sourceBranch": "refs/heads/dev-sczg",
-          "artifactName": "drop"
+          "artifactName": "drop",
+          "deploymentAudit": {
+            "checkedAt": "2026-10-15T03:05:31+00:00",
+            "status": "no-linked-release-found",
+            "buildDeploymentInspection": "No application deployment found in enabled build steps or expanded task groups; encryption and artifact publishing are not deployment.",
+            "releases": []
+          }
         }
       ],
       "repos": [

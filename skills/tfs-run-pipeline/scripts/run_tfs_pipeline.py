@@ -175,6 +175,8 @@ def pipeline_plan(
         "sourceBranch": source_branch,
         "buildProfile": pipeline.get("buildProfile"),
         "expectedArtifact": pipeline.get("artifactName"),
+        "deploymentAudit": pipeline.get("deploymentAudit"),
+        "deploymentMonitoring": "not-included-in-build-monitoring",
     }
 
 
@@ -415,6 +417,7 @@ def main() -> int:
                             "sourceBranch": catalog_pipeline.get("sourceBranch"),
                             "buildProfile": catalog_pipeline.get("buildProfile"),
                             "expectedArtifact": catalog_pipeline.get("artifactName"),
+                            "deploymentAudit": catalog_pipeline.get("deploymentAudit"),
                         }
                     )
             pipelines.sort(

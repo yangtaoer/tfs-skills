@@ -80,6 +80,7 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 | `projects[].pipelines[].sourceBranch` | yes | Full Build API branch ref, such as `refs/heads/dev`. |
 | `projects[].pipelines[].buildProfile` | no | Build profile or variant used by the pipeline. |
 | `projects[].pipelines[].artifactName` | no | Expected published artifact, such as `drop`. |
+| `projects[].pipelines[].deploymentAudit` | no | Dated, read-only audit of classic Releases linked to this exact Build definition. See below. |
 | `projects[].repos[].name` | yes | Human/repo name. Prefer actual TFS Git repo name. |
 | `projects[].repos[].remote` | yes | TFS Git remote URL. Used for local repo matching. |
 | `projects[].repos[].targetBranch` | no | Base branch for this repo. Defaults to project branch. |
@@ -102,6 +103,22 @@ Use JSON as the canonical tracked format. JSON is readable by Python standard li
 - A staged workflow must contain at least one pipeline with `purpose: delivery`.
 - Pipelines in the same stage may run concurrently. Every pipeline in an earlier stage must succeed before the next stage is queued.
 - Do not include `TFS_PAT`, passwords, or personal tokens.
+
+## Deployment Audit
+
+`deploymentAudit` is a snapshot, not authorization to deploy or a live health result:
+
+- `checkedAt`: ISO-8601 timestamp of the TFS audit.
+- `status`: `linked-releases-found`, `no-linked-release-found`, or `audit-failed`. Missing metadata means not audited.
+- `buildDeploymentInspection`: concise result of separately inspecting enabled Build steps/task groups; encryption and artifact publishing do not count as application deployment.
+- `releases[]`: `releaseDefinitionId`, `name`, `definitionUrl`, matching `artifactAliases`, `automaticTrigger`, and `triggerConditions`. A linked Release with `automaticTrigger: false` is not triggered by this Build.
+- `releases[].environments[]`: `environmentId`, `name`, startup `conditions`, `automaticApproval`, `schedules`, `targets`, and any `unexpandedTaskGroupIds`. Unexpanded tasks may hide additional deployment behavior and must not be treated as fully audited.
+- `targets[]`: service connection `endpointId`/`endpointName`, `host`, `hostEvidence`, `sshPort`, `directories`, `serviceScripts`, and ordered task names in `steps`.
+- SSH-enriched target fields: `httpPort`, `contextPath`, `applicationUrl`, `configPath`, `sshVerifiedAt`, `observedListeningPorts`, and `portVerification`.
+- `portVerification`: `runtime-listener-verified` requires the HTTP port in `observedListeningPorts`; `configuration-only-not-listening` means the configuration was read but no matching application listener was observed. Do not present it as a healthy endpoint.
+- `serviceTiming`: observed process-check/grace/restart delays and whether the service script performs a readiness health check. Process existence is not application readiness.
+
+Store only operational metadata needed to locate a deployment. Never export service connection authorization, SSH credentials, application passwords, private keys, or entire server configuration files.
 
 ## Remote Inference
 

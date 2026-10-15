@@ -19,6 +19,8 @@ Resolve a project's delivery workflow from `../tfs-project-catalog/references/pr
 6. Queue all pipelines in one stage before waiting, so independent pipelines in that stage can run concurrently.
 7. Do not queue a later stage unless every pipeline in the preceding stage finished with `succeeded`.
 8. Do not report delivery success unless every workflow build succeeded and every `purpose: delivery` pipeline has its expected published artifact. Dependency pipelines may legitimately have no published build artifact.
+9. Before queueing, inspect `deploymentAudit` and disclose any automatically triggered Release, target server, directory, and port. Running a Build can also restart that environment through TFS's existing trigger. If the user requires packaging without deployment, do not queue an auto-deploying definition until a compatible path is established.
+10. Build monitoring ends at artifact verification. It does not monitor Release deployment or application readiness; report these separately and never infer deployment success from Build success. A service script checking that a PID exists is not an HTTP readiness check.
 
 ## Workflow
 
@@ -39,6 +41,14 @@ python scripts/run_tfs_pipeline.py --project-name "自贡检修计划智能编�
 ```
 
 This read-only command validates every definition, repository, branch, Maven profile when present, and visible published-artifact task. If an artifact is published inside a TFS task group and cannot be seen in the definition, preflight reports `deferred-to-build-result`; the script still verifies the actual artifact after the build.
+
+Deployment metadata in the plan is a dated snapshot from the catalog. Before a run that may deploy, refresh the Release linkage and triggers read-only with:
+
+```powershell
+python scripts/audit_tfs_deployments.py --project-name "四川省调网络发令"
+```
+
+Omit `--project-name` to inspect all cataloged definitions. The auditor exports allowlisted deployment metadata only. For interpretation and the verified Sichuan server/port inventory, read [references/automatic-deployment.md](references/automatic-deployment.md).
 
 ### 2. Queue and wait
 
@@ -65,6 +75,7 @@ For a successful build, report:
 - Build results URL.
 - Backend and frontend published-artifacts page URLs when labeled by `deliverable`.
 - Artifact names, normally `drop`.
+- Existing automatic deployment side effects, Release link, target server/application URL, audit date, and whether deployment was actually observed. With the bundled Build monitor, say "package succeeded; deployment not monitored".
 
 For a failed, canceled, or artifact-less delivery build, report the results URL and the failure clearly. Do not start later stages after a failed dependency and do not present the artifacts URL as a successful delivery.
 

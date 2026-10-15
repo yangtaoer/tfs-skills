@@ -88,6 +88,34 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
                     f"{name}/{definition_id}: definitionUrl must contain matching definitionId"
                 )
             stage = pipeline.get("stage")
+            deployment = pipeline.get("deploymentAudit")
+            if deployment is not None:
+                if not isinstance(deployment, dict):
+                    errors.append(f"{name}/{definition_id}: deploymentAudit must be an object")
+                else:
+                    if deployment.get("status") not in {
+                        "linked-releases-found", "no-linked-release-found", "audit-failed"
+                    }:
+                        errors.append(f"{name}/{definition_id}: invalid deployment audit status")
+                    if not deployment.get("checkedAt"):
+                        errors.append(f"{name}/{definition_id}: deployment audit missing checkedAt")
+                    for release in deployment.get("releases", []):
+                        release_id = release.get("releaseDefinitionId")
+                        if not isinstance(release_id, int) or release_id <= 0:
+                            errors.append(f"{name}/{definition_id}: invalid Release definition ID")
+                        if not isinstance(release.get("automaticTrigger"), bool):
+                            errors.append(f"{name}/{definition_id}: automaticTrigger must be boolean")
+                        for environment in release.get("environments", []):
+                            for target in environment.get("targets", []):
+                                for field in ("sshPort", "httpPort"):
+                                    port = target.get(field)
+                                    if port is not None and (
+                                        not isinstance(port, int) or not 1 <= port <= 65535
+                                    ):
+                                        errors.append(f"{name}/{definition_id}: invalid {field}")
+                                if target.get("portVerification") == "runtime-listener-verified":
+                                    if target.get("httpPort") not in target.get("observedListeningPorts", []):
+                                        errors.append(f"{name}/{definition_id}: verified port has no listener evidence")
             if has_staged_pipeline:
                 if not isinstance(stage, int) or stage <= 0:
                     errors.append(
@@ -290,6 +318,7 @@ def build_workspace(args: argparse.Namespace) -> dict[str, Any]:
                     "sourceBranch": pipeline.get("sourceBranch", ""),
                     "buildProfile": pipeline.get("buildProfile", ""),
                     "artifactName": pipeline.get("artifactName", ""),
+                    "deploymentAudit": pipeline.get("deploymentAudit"),
                 }
             )
         project_branch = project.get("defaultTargetBranch") or args.target_branch or ""

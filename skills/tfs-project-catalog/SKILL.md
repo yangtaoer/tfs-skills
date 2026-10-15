@@ -16,6 +16,7 @@ The catalog is the source of truth for:
 - Repositories involved in each project.
 - Base branches for those repositories.
 - Delivery pipeline workflows, execution stages, source branches, deliverable labels, and definition URLs when known.
+- Build-linked Release triggers, deployment servers/directories, and SSH-verified HTTP ports under each pipeline's `deploymentAudit`.
 - Optional keywords and roles for frontend/backend/service matching.
 
 ## Required Files
@@ -37,6 +38,8 @@ The catalog is the source of truth for:
 7. Never store PATs or credentials in the catalog.
 8. For Maven-derived compositions, include dependencies whose group is owned by Tellhow only when a matching TFS Git repository can be resolved, and include `dcsd-springboot-starter` as the delivery entry repository. Exclude third-party and binary-only dependencies.
 9. Verify every delivery definition against the live TFS Build API: definition name, repository, source branch, Maven profile, and published artifact must match the catalog.
+10. Resolve deployment links by the exact TFS project ID and Build definition ID, not by project or Release names. `automaticTrigger: false` means a linked Release exists but the build does not automatically create it. `no-linked-release-found` records an audit result, not proof that no manual deployment exists elsewhere.
+11. Record server/port evidence and `checkedAt`; distinguish `runtime-listener-verified` from `configuration-only-not-listening`. Prefer external configuration and the actual process's sockets over defaults inside the JAR. Never store SSH passwords or application credentials.
 
 ## Unknown Projects
 
@@ -78,6 +81,7 @@ When resolving a project, report:
 - Matched input term, such as alias or bracket value.
 - Repositories, role, remote URL, and target branch.
 - Delivery pipelines, including purpose, execution stage, deliverable label, definition ID, definition URL, and source branch.
+- Deployment audit status, Release ID/link, automatic trigger status, target host/directory, HTTP URL/port, verification status, and audit date when present.
 - Whether each repo was found locally.
 - Ambiguities that require user confirmation.
 
